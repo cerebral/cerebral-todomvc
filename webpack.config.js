@@ -5,7 +5,7 @@ var TARGET = process.env.npm_lifecycle_event;
 
 var config = {
   entry: path.resolve(src, 'main.js'),
-  devtool: TARGET === 'start'? 'eval-source-map' : 'source-map',
+  devtool: 'source-map',
   output: {
     path: dist,
     filename: 'todomvc.js'
@@ -19,6 +19,14 @@ var config = {
       loader: 'babel?optional=es7.decorators',
       include: src
     }]
+  },
+  resolve: {
+    extensions: [ '', '.js', '.jsx' ],
+    fallback: path.join(__dirname, 'node_modules')
+  },
+
+  resolveLoader: {
+    root: path.join(__dirname, 'node_modules')
   }
 };
 

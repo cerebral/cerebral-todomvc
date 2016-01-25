@@ -13,6 +13,7 @@ import App from './modules/App/components/App';
 import AppModule from './modules/App';
 
 import Refs from './modules/Refs';
+import Devtools from 'cerebral-module-devtools';
 import Recorder from 'cerebral-module-recorder';
 import Router from 'cerebral-module-router';
 
@@ -23,11 +24,12 @@ controller.modules({
 
   refs: Refs(),
   recorder: Recorder(),
+  devtools: Devtools(),
   router: Router({
-    '/': 'app.footer.allTodosClicked',
-    '/:filter': 'app.footer.filterClicked'
+    '/': 'app.footer.filterClicked'
   }, {
-    onlyHash: true
+    autoTrigger: true,
+    mapper: { query: true }
   })
 });
 
