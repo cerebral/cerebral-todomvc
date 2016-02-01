@@ -109,6 +109,7 @@
 	  router: (0, _cerebralModuleRouter2['default'])({
 	    '/': 'app.footer.filterClicked'
 	  }, {
+	    onlyHash: true,
 	    mapper: { query: true }
 	  })
 	});
