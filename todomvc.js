@@ -74,23 +74,23 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _App3 = __webpack_require__(270);
+	var _app = __webpack_require__(270);
 	
-	var _App4 = _interopRequireDefault(_App3);
+	var _app2 = _interopRequireDefault(_app);
 	
-	var _Refs = __webpack_require__(301);
+	var _refs = __webpack_require__(299);
 	
-	var _Refs2 = _interopRequireDefault(_Refs);
+	var _refs2 = _interopRequireDefault(_refs);
 	
-	var _cerebralModuleDevtools = __webpack_require__(302);
+	var _cerebralModuleDevtools = __webpack_require__(300);
 	
 	var _cerebralModuleDevtools2 = _interopRequireDefault(_cerebralModuleDevtools);
 	
-	var _cerebralModuleRecorder = __webpack_require__(313);
+	var _cerebralModuleRecorder = __webpack_require__(311);
 	
 	var _cerebralModuleRecorder2 = _interopRequireDefault(_cerebralModuleRecorder);
 	
-	var _cerebralModuleRouter = __webpack_require__(316);
+	var _cerebralModuleRouter = __webpack_require__(314);
 	
 	var _cerebralModuleRouter2 = _interopRequireDefault(_cerebralModuleRouter);
 	
@@ -99,8 +99,8 @@
 	var controller = (0, _cerebral.Controller)((0, _immutable2.default)({}));
 	
 	controller.addModules({
-	  app: (0, _App4.default)(),
-	  refs: (0, _Refs2.default)(),
+	  app: (0, _app2.default)(),
+	  refs: (0, _refs2.default)(),
 	  recorder: (0, _cerebralModuleRecorder2.default)(),
 	  devtools: (0, _cerebralModuleDevtools2.default)(),
 	  router: (0, _cerebralModuleRouter2.default)({
@@ -28856,8 +28856,6 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -28866,62 +28864,30 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
 	exports.default = (0, _cerebralViewReact.connect)({
-	  isSaving: 'app.new.isSaving',
 	  title: 'app.new.title'
-	}, function (_React$Component) {
-	  _inherits(NewTodo, _React$Component);
+	}, function NewTodo(_ref) {
+	  var isSaving = _ref.isSaving;
+	  var title = _ref.title;
+	  var signals = _ref.signals;
 	
-	  function NewTodo() {
-	    _classCallCheck(this, NewTodo);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NewTodo).apply(this, arguments));
-	  }
-	
-	  _createClass(NewTodo, [{
-	    key: 'onFormSubmit',
-	    value: function onFormSubmit(event) {
-	      event.preventDefault();
-	      this.props.signals.app.new.submitted();
-	    }
-	  }, {
-	    key: 'onNewTodoTitleChange',
-	    value: function onNewTodoTitleChange(event) {
-	      this.props.signals.app.new.titleChanged({
-	        title: event.target.value
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      return _react2.default.createElement(
-	        'form',
-	        { id: 'todo-form', onSubmit: function onSubmit(e) {
-	            return _this2.onFormSubmit(e);
-	          } },
-	        _react2.default.createElement('input', {
-	          id: 'new-todo',
-	          autoComplete: 'off',
-	          placeholder: 'What needs to be done?',
-	          value: this.props.title,
-	          onChange: function onChange(e) {
-	            return _this2.onNewTodoTitleChange(e);
-	          }
-	        })
-	      );
-	    }
-	  }]);
-	
-	  return NewTodo;
-	}(_react2.default.Component));
+	  return _react2.default.createElement(
+	    'form',
+	    { id: 'todo-form', onSubmit: function onSubmit(e) {
+	        e.preventDefault();
+	        signals.app.new.submitted();
+	      } },
+	    _react2.default.createElement('input', {
+	      id: 'new-todo',
+	      autoComplete: 'off',
+	      placeholder: 'What needs to be done?',
+	      value: title,
+	      onChange: function onChange(e) {
+	        return signals.app.new.titleChanged({ title: e.target.value });
+	      }
+	    })
+	  );
+	});
 
 /***/ },
 /* 262 */
@@ -28932,8 +28898,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(10);
 	
@@ -28955,60 +28919,38 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
 	exports.default = (0, _cerebralViewReact.connect)({
 	  isAllChecked: (0, _isAllChecked2.default)(),
 	  todoKeys: (0, _visibleTodos2.default)()
-	}, function (_React$Component) {
-	  _inherits(List, _React$Component);
+	}, function List(_ref) {
+	  var isAllChecked = _ref.isAllChecked;
+	  var todoKeys = _ref.todoKeys;
+	  var signals = _ref.signals;
 	
-	  function List() {
-	    _classCallCheck(this, List);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(List).apply(this, arguments));
-	  }
-	
-	  _createClass(List, [{
-	    key: 'renderTodo',
-	    value: function renderTodo(key) {
-	      return _react2.default.createElement(_Todo2.default, { key: key, todoKey: key });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      return _react2.default.createElement(
-	        'section',
-	        { id: 'main' },
-	        _react2.default.createElement('input', {
-	          id: 'toggle-all',
-	          type: 'checkbox',
-	          checked: this.props.isAllChecked,
-	          onChange: function onChange() {
-	            return _this2.props.signals.app.list.toggleAllChanged();
-	          } }),
-	        _react2.default.createElement(
-	          'label',
-	          { htmlFor: 'toggle-all' },
-	          'Mark all as complete'
-	        ),
-	        _react2.default.createElement(
-	          'ul',
-	          { id: 'todo-list' },
-	          this.props.todoKeys.map(this.renderTodo.bind(this))
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return List;
-	}(_react2.default.Component));
+	  return _react2.default.createElement(
+	    'section',
+	    { id: 'main' },
+	    _react2.default.createElement('input', {
+	      id: 'toggle-all',
+	      type: 'checkbox',
+	      checked: isAllChecked,
+	      onChange: function onChange() {
+	        return signals.app.list.toggleAllChanged();
+	      } }),
+	    _react2.default.createElement(
+	      'label',
+	      { htmlFor: 'toggle-all' },
+	      'Mark all as complete'
+	    ),
+	    _react2.default.createElement(
+	      'ul',
+	      { id: 'todo-list' },
+	      todoKeys.map(function (key) {
+	        return _react2.default.createElement(_Todo2.default, { key: key, todoKey: key });
+	      })
+	    )
+	  );
+	});
 
 /***/ },
 /* 263 */
@@ -29063,8 +29005,6 @@
 	  }, {
 	    key: 'edit',
 	    value: function edit() {
-	      var _this2 = this;
-	
 	      if (this.props.todo.$isSaving) {
 	        return;
 	      }
@@ -29072,13 +29012,6 @@
 	      this.props.signals.app.list.todoDoubleClicked({
 	        ref: this.props.todo.$ref
 	      });
-	
-	      // FOCUS fix
-	      setTimeout(function () {
-	        var input = _this2.refs.edit;
-	        input.focus();
-	        input.value = input.value;
-	      }, 0);
 	    }
 	  }, {
 	    key: 'onNewTitleChange',
@@ -29120,7 +29053,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      var className = (0, _classnames2.default)({
 	        completed: this.props.todo.completed,
@@ -29138,13 +29071,13 @@
 	            type: 'checkbox',
 	            disabled: this.props.todo.$isSaving,
 	            onChange: function onChange() {
-	              return _this3.onCompletedToggle();
+	              return _this2.onCompletedToggle();
 	            },
 	            checked: this.props.todo.completed }),
 	          _react2.default.createElement(
 	            'label',
 	            { onDoubleClick: function onDoubleClick() {
-	                return _this3.edit();
+	                return _this2.edit();
 	              } },
 	            this.props.todo.title,
 	            ' ',
@@ -29157,23 +29090,23 @@
 	          this.props.todo.$isSaving ? null : _react2.default.createElement('button', {
 	            className: 'destroy',
 	            onClick: function onClick() {
-	              return _this3.onRemoveClick();
+	              return _this2.onRemoveClick();
 	            } })
 	        ),
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: function onSubmit(e) {
-	              return _this3.onNewTitleSubmit(e);
+	              return _this2.onNewTitleSubmit(e);
 	            } },
 	          _react2.default.createElement('input', {
 	            ref: 'edit',
 	            className: 'edit',
 	            value: this.props.todo.$newTitle || this.props.todo.title,
 	            onBlur: function onBlur() {
-	              return _this3.onNewTitleBlur();
+	              return _this2.onNewTitleBlur();
 	            },
 	            onChange: function onChange(e) {
-	              return _this3.onNewTitleChange(e);
+	              return _this2.onNewTitleChange(e);
 	            }
 	          })
 	        )
@@ -29296,8 +29229,6 @@
 	  value: true
 	});
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	var _react = __webpack_require__(10);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -29308,109 +29239,83 @@
 	
 	var _counts2 = _interopRequireDefault(_counts);
 	
+	var _classnames = __webpack_require__(264);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	function CompletedButton(_ref) {
+	  var completedCount = _ref.completedCount;
+	  var onClick = _ref.onClick;
 	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	  return _react2.default.createElement(
+	    'button',
+	    { id: 'clear-completed', onClick: onClick },
+	    'Clear completed (',
+	    completedCount,
+	    ')'
+	  );
+	}
 	
 	exports.default = (0, _cerebralViewReact.connect)({
 	  filter: 'app.footer.filter',
 	  counts: (0, _counts2.default)()
-	}, function (_React$Component) {
-	  _inherits(TodosFooter, _React$Component);
+	}, function Footer(_ref2) {
+	  var filter = _ref2.filter;
+	  var counts = _ref2.counts;
+	  var signals = _ref2.signals;
 	
-	  function TodosFooter() {
-	    _classCallCheck(this, TodosFooter);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TodosFooter).apply(this, arguments));
-	  }
-	
-	  _createClass(TodosFooter, [{
-	    key: 'renderRemainingCount',
-	    value: function renderRemainingCount() {
-	      var count = this.props.counts.remainingCount;
-	      if (count === 0 || count > 1) {
-	        return count + ' items left';
-	      } else {
-	        return count + ' item left';
-	      }
-	    }
-	  }, {
-	    key: 'renderRouteClass',
-	    value: function renderRouteClass(filter) {
-	      return this.props.filter === filter ? 'selected' : '';
-	    }
-	  }, {
-	    key: 'renderCompletedButton',
-	    value: function renderCompletedButton() {
-	      var _this2 = this;
-	
-	      return _react2.default.createElement(
-	        'button',
-	        { id: 'clear-completed', onClick: function onClick() {
-	            return _this2.props.signals.app.footer.clearCompletedClicked();
-	          } },
-	        'Clear completed (',
-	        this.props.counts.completedCount,
-	        ')'
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'footer',
-	        { id: 'footer' },
+	  return _react2.default.createElement(
+	    'footer',
+	    { id: 'footer' },
+	    _react2.default.createElement(
+	      'span',
+	      { id: 'todo-count' },
+	      _react2.default.createElement(
+	        'strong',
+	        null,
+	        counts.remainingCount,
+	        ' ',
+	        counts.remainingCountPlural
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'ul',
+	      { id: 'filters' },
+	      _react2.default.createElement(
+	        'li',
+	        null,
 	        _react2.default.createElement(
-	          'span',
-	          { id: 'todo-count' },
-	          _react2.default.createElement(
-	            'strong',
-	            null,
-	            this.renderRemainingCount()
-	          )
-	        ),
+	          _cerebralViewReact.Link,
+	          { className: (0, _classnames2.default)({ selected: filter === 'all' }), signal: 'app.footer.filterClicked' },
+	          'All'
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'li',
+	        null,
 	        _react2.default.createElement(
-	          'ul',
-	          { id: 'filters' },
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            _react2.default.createElement(
-	              _cerebralViewReact.Link,
-	              { className: this.renderRouteClass('all'), signal: 'app.footer.filterClicked' },
-	              'All'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            _react2.default.createElement(
-	              _cerebralViewReact.Link,
-	              { className: this.renderRouteClass('active'), signal: 'app.footer.filterClicked', params: { filter: 'active' } },
-	              'Active'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'li',
-	            null,
-	            _react2.default.createElement(
-	              _cerebralViewReact.Link,
-	              { className: this.renderRouteClass('completed'), signal: 'app.footer.filterClicked', params: { filter: 'completed' } },
-	              'Completed'
-	            )
-	          )
-	        ),
-	        this.props.counts.completedCount ? this.renderCompletedButton() : null
-	      );
-	    }
-	  }]);
-	
-	  return TodosFooter;
-	}(_react2.default.Component));
+	          _cerebralViewReact.Link,
+	          { className: (0, _classnames2.default)({ selected: filter === 'active' }), signal: 'app.footer.filterClicked', params: { filter: 'active' } },
+	          'Active'
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'li',
+	        null,
+	        _react2.default.createElement(
+	          _cerebralViewReact.Link,
+	          { className: (0, _classnames2.default)({ selected: filter === 'completed' }), signal: 'app.footer.filterClicked', params: { filter: 'completed' } },
+	          'Completed'
+	        )
+	      )
+	    ),
+	    counts.completedCount ? _react2.default.createElement(CompletedButton, { completedCount: counts.completedCount, onClick: function onClick() {
+	        return signals.app.footer.clearCompletedClicked();
+	      } }) : null
+	  );
+	});
 
 /***/ },
 /* 268 */
@@ -29442,10 +29347,13 @@
 	    remainingCount: 0
 	  });
 	
-	  return {
-	    remainingCount: counts.remainingCount,
-	    completedCount: counts.completedCount
-	  };
+	  if (counts.remainingCount === 0 || counts.remainingCount > 1) {
+	    counts.remainingCountPlural = 'items left';
+	  } else {
+	    counts.remainingCountPlural = 'items left';
+	  }
+	
+	  return counts;
 	});
 
 /***/ },
@@ -29468,7 +29376,10 @@
 	
 	exports.default = (0, _cerebralViewReact.connect)({
 	  recorder: 'recorder'
-	}, function (props) {
+	}, function (_ref) {
+	  var recorder = _ref.recorder;
+	  var signals = _ref.signals;
+	
 	  var style = {
 	    border: '1px solid black',
 	    borderRadius: '2px',
@@ -29478,8 +29389,7 @@
 	    lineHeight: '15px',
 	    boxSizing: 'border-box'
 	  };
-	  var signals = props.signals;
-	  if (props.recorder.isPlaying) {
+	  if (recorder.isPlaying) {
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
@@ -29489,7 +29399,7 @@
 	      }
 	    }, 'Pause playback');
 	  }
-	  if (props.recorder.isPaused) {
+	  if (recorder.isPaused) {
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
@@ -29497,7 +29407,7 @@
 	      }
 	    }, 'Play');
 	  }
-	  if (props.recorder.isRecording) {
+	  if (recorder.isRecording) {
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
@@ -29505,7 +29415,7 @@
 	      }
 	    }, 'Stop recording');
 	  }
-	  if (props.recorder.hasRecorded) {
+	  if (recorder.hasRecorded) {
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
@@ -29531,17 +29441,17 @@
 	  value: true
 	});
 	
-	var _NewTodo = __webpack_require__(271);
+	var _new = __webpack_require__(271);
 	
-	var _NewTodo2 = _interopRequireDefault(_NewTodo);
+	var _new2 = _interopRequireDefault(_new);
 	
-	var _List = __webpack_require__(281);
+	var _list = __webpack_require__(279);
 	
-	var _List2 = _interopRequireDefault(_List);
+	var _list2 = _interopRequireDefault(_list);
 	
-	var _Footer = __webpack_require__(296);
+	var _footer = __webpack_require__(294);
 	
-	var _Footer2 = _interopRequireDefault(_Footer);
+	var _footer2 = _interopRequireDefault(_footer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29550,9 +29460,9 @@
 	
 	  return function (module) {
 	    module.addModules({
-	      new: (0, _NewTodo2.default)(),
-	      list: (0, _List2.default)(),
-	      footer: (0, _Footer2.default)()
+	      new: (0, _new2.default)(),
+	      list: (0, _list2.default)(),
+	      footer: (0, _footer2.default)()
 	    });
 	  };
 	};
@@ -29571,7 +29481,7 @@
 	
 	var _submitTodo2 = _interopRequireDefault(_submitTodo);
 	
-	var _changeTitle = __webpack_require__(279);
+	var _changeTitle = __webpack_require__(277);
 	
 	var _changeTitle2 = _interopRequireDefault(_changeTitle);
 	
@@ -29582,8 +29492,7 @@
 	
 	  return function (module) {
 	    module.addState({
-	      title: '',
-	      isSaving: false
+	      title: ''
 	    });
 	
 	    module.addSignals({
@@ -29614,28 +29523,20 @@
 	
 	var _saveTodo2 = _interopRequireDefault(_saveTodo);
 	
-	var _setSaving = __webpack_require__(275);
-	
-	var _setSaving2 = _interopRequireDefault(_setSaving);
-	
-	var _unsetSaving = __webpack_require__(276);
-	
-	var _unsetSaving2 = _interopRequireDefault(_unsetSaving);
-	
-	var _updateTodo = __webpack_require__(277);
+	var _updateTodo = __webpack_require__(275);
 	
 	var _updateTodo2 = _interopRequireDefault(_updateTodo);
 	
-	var _setError = __webpack_require__(278);
+	var _setError = __webpack_require__(276);
 	
 	var _setError2 = _interopRequireDefault(_setError);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.default = [_addTodo2.default, _setSaving2.default, _saveTodo2.default, {
+	exports.default = [_addTodo2.default, _saveTodo2.default, {
 	  success: [_updateTodo2.default],
 	  error: [_setError2.default]
-	}, _unsetSaving2.default];
+	}];
 
 /***/ },
 /* 273 */
@@ -29704,40 +29605,6 @@
 /* 275 */
 /***/ function(module, exports) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	function setSaving(_ref) {
-	  var state = _ref.state;
-	
-	  state.set('app.new.isSaving', true);
-	}
-	
-	exports.default = setSaving;
-
-/***/ },
-/* 276 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	function unsetSaving(_ref) {
-	  var state = _ref.state;
-	
-	  state.set('app.new.isSaving', false);
-	}
-	
-	exports.default = unsetSaving;
-
-/***/ },
-/* 277 */
-/***/ function(module, exports) {
-
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -29756,7 +29623,7 @@
 	exports.default = updateTodo;
 
 /***/ },
-/* 278 */
+/* 276 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -29778,7 +29645,7 @@
 	exports.default = setError;
 
 /***/ },
-/* 279 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29787,7 +29654,7 @@
 	  value: true
 	});
 	
-	var _setTitle = __webpack_require__(280);
+	var _setTitle = __webpack_require__(278);
 	
 	var _setTitle2 = _interopRequireDefault(_setTitle);
 	
@@ -29796,7 +29663,7 @@
 	exports.default = [_setTitle2.default];
 
 /***/ },
-/* 280 */
+/* 278 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29814,7 +29681,7 @@
 	exports.default = setTitle;
 
 /***/ },
-/* 281 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29823,31 +29690,31 @@
 	  value: true
 	});
 	
-	var _setTodoNewTitle = __webpack_require__(282);
+	var _setTodoNewTitle = __webpack_require__(280);
 	
 	var _setTodoNewTitle2 = _interopRequireDefault(_setTodoNewTitle);
 	
-	var _overwriteTodoTitle = __webpack_require__(284);
+	var _overwriteTodoTitle = __webpack_require__(282);
 	
 	var _overwriteTodoTitle2 = _interopRequireDefault(_overwriteTodoTitle);
 	
-	var _removeTodo = __webpack_require__(288);
+	var _removeTodo = __webpack_require__(286);
 	
 	var _removeTodo2 = _interopRequireDefault(_removeTodo);
 	
-	var _editTodo = __webpack_require__(290);
+	var _editTodo = __webpack_require__(288);
 	
 	var _editTodo2 = _interopRequireDefault(_editTodo);
 	
-	var _toggleAllChecked = __webpack_require__(292);
+	var _toggleAllChecked = __webpack_require__(290);
 	
 	var _toggleAllChecked2 = _interopRequireDefault(_toggleAllChecked);
 	
-	var _toggleTodoCompleted = __webpack_require__(294);
+	var _toggleTodoCompleted = __webpack_require__(292);
 	
 	var _toggleTodoCompleted2 = _interopRequireDefault(_toggleTodoCompleted);
 	
-	var _stopEditingTodo = __webpack_require__(286);
+	var _stopEditingTodo = __webpack_require__(284);
 	
 	var _stopEditingTodo2 = _interopRequireDefault(_stopEditingTodo);
 	
@@ -29881,7 +29748,7 @@
 	};
 
 /***/ },
-/* 282 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29890,7 +29757,7 @@
 	  value: true
 	});
 	
-	var _setTodoNewTitle = __webpack_require__(283);
+	var _setTodoNewTitle = __webpack_require__(281);
 	
 	var _setTodoNewTitle2 = _interopRequireDefault(_setTodoNewTitle);
 	
@@ -29899,7 +29766,7 @@
 	exports.default = [_setTodoNewTitle2.default];
 
 /***/ },
-/* 283 */
+/* 281 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -29919,7 +29786,7 @@
 	exports.default = setTodoNewTitle;
 
 /***/ },
-/* 284 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29928,11 +29795,11 @@
 	  value: true
 	});
 	
-	var _overwriteTodoTitle = __webpack_require__(285);
+	var _overwriteTodoTitle = __webpack_require__(283);
 	
 	var _overwriteTodoTitle2 = _interopRequireDefault(_overwriteTodoTitle);
 	
-	var _stopEditingTodo = __webpack_require__(286);
+	var _stopEditingTodo = __webpack_require__(284);
 	
 	var _stopEditingTodo2 = _interopRequireDefault(_stopEditingTodo);
 
@@ -29943,7 +29810,7 @@
 	exports.default = [_overwriteTodoTitle2.default].concat(_toConsumableArray(_stopEditingTodo2.default));
 
 /***/ },
-/* 285 */
+/* 283 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29962,7 +29829,7 @@
 	exports.default = overwriteTodoTitle;
 
 /***/ },
-/* 286 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29971,7 +29838,7 @@
 	  value: true
 	});
 	
-	var _stopEditingTodo = __webpack_require__(287);
+	var _stopEditingTodo = __webpack_require__(285);
 	
 	var _stopEditingTodo2 = _interopRequireDefault(_stopEditingTodo);
 	
@@ -29980,7 +29847,7 @@
 	exports.default = [_stopEditingTodo2.default];
 
 /***/ },
-/* 287 */
+/* 285 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30003,7 +29870,7 @@
 	exports.default = stopEditingTodo;
 
 /***/ },
-/* 288 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30012,7 +29879,7 @@
 	  value: true
 	});
 	
-	var _removeTodo = __webpack_require__(289);
+	var _removeTodo = __webpack_require__(287);
 	
 	var _removeTodo2 = _interopRequireDefault(_removeTodo);
 	
@@ -30021,7 +29888,7 @@
 	exports.default = [_removeTodo2.default];
 
 /***/ },
-/* 289 */
+/* 287 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30039,7 +29906,7 @@
 	exports.default = removeTodo;
 
 /***/ },
-/* 290 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30048,7 +29915,7 @@
 	  value: true
 	});
 	
-	var _editTodo = __webpack_require__(291);
+	var _editTodo = __webpack_require__(289);
 	
 	var _editTodo2 = _interopRequireDefault(_editTodo);
 	
@@ -30057,7 +29924,7 @@
 	exports.default = [_editTodo2.default];
 
 /***/ },
-/* 291 */
+/* 289 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30079,7 +29946,7 @@
 	exports.default = editTodo;
 
 /***/ },
-/* 292 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30088,7 +29955,7 @@
 	  value: true
 	});
 	
-	var _toggleAllChecked = __webpack_require__(293);
+	var _toggleAllChecked = __webpack_require__(291);
 	
 	var _toggleAllChecked2 = _interopRequireDefault(_toggleAllChecked);
 	
@@ -30097,7 +29964,7 @@
 	exports.default = [_toggleAllChecked2.default];
 
 /***/ },
-/* 293 */
+/* 291 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30122,7 +29989,7 @@
 	exports.default = toggleAllChecked;
 
 /***/ },
-/* 294 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30131,7 +29998,7 @@
 	  value: true
 	});
 	
-	var _toggleTodoCompleted = __webpack_require__(295);
+	var _toggleTodoCompleted = __webpack_require__(293);
 	
 	var _toggleTodoCompleted2 = _interopRequireDefault(_toggleTodoCompleted);
 	
@@ -30140,7 +30007,7 @@
 	exports.default = [_toggleTodoCompleted2.default];
 
 /***/ },
-/* 295 */
+/* 293 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30159,7 +30026,7 @@
 	exports.default = toggleTodoCompleted;
 
 /***/ },
-/* 296 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30168,11 +30035,11 @@
 	  value: true
 	});
 	
-	var _clearCompleted = __webpack_require__(297);
+	var _clearCompleted = __webpack_require__(295);
 	
 	var _clearCompleted2 = _interopRequireDefault(_clearCompleted);
 	
-	var _setFilter = __webpack_require__(299);
+	var _setFilter = __webpack_require__(297);
 	
 	var _setFilter2 = _interopRequireDefault(_setFilter);
 	
@@ -30194,7 +30061,7 @@
 	};
 
 /***/ },
-/* 297 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30203,7 +30070,7 @@
 	  value: true
 	});
 	
-	var _clearCompleted = __webpack_require__(298);
+	var _clearCompleted = __webpack_require__(296);
 	
 	var _clearCompleted2 = _interopRequireDefault(_clearCompleted);
 	
@@ -30212,7 +30079,7 @@
 	exports.default = [_clearCompleted2.default];
 
 /***/ },
-/* 298 */
+/* 296 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30235,7 +30102,7 @@
 	exports.default = clearCompleted;
 
 /***/ },
-/* 299 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30244,7 +30111,7 @@
 	  value: true
 	});
 	
-	var _setFilter = __webpack_require__(300);
+	var _setFilter = __webpack_require__(298);
 	
 	var _setFilter2 = _interopRequireDefault(_setFilter);
 	
@@ -30253,7 +30120,7 @@
 	exports.default = [_setFilter2.default];
 
 /***/ },
-/* 300 */
+/* 298 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30271,7 +30138,7 @@
 	exports.default = setFilter;
 
 /***/ },
-/* 301 */
+/* 299 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30301,12 +30168,12 @@
 	};
 
 /***/ },
-/* 302 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-env browser*/
-	var SignalStore = __webpack_require__(303)
-	var utils = __webpack_require__(308)
+	var SignalStore = __webpack_require__(301)
+	var utils = __webpack_require__(306)
 	var requestAnimationFrame = requestAnimationFrame || function (cb) { setTimeout(cb) }
 	var staticTree = __webpack_require__(234)
 	
@@ -30315,10 +30182,10 @@
 	  if (typeof window.chrome === 'undefined') { return function () {} }
 	
 	  return function init (module, controller) {
+	    controller.addContextProvider(__webpack_require__(307))
+	    controller.addContextProvider(__webpack_require__(308))
 	    controller.addContextProvider(__webpack_require__(309))
 	    controller.addContextProvider(__webpack_require__(310))
-	    controller.addContextProvider(__webpack_require__(311))
-	    controller.addContextProvider(__webpack_require__(312))
 	
 	    module.addModules({
 	      store: SignalStore()
@@ -30566,7 +30433,7 @@
 
 
 /***/ },
-/* 303 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -30575,7 +30442,7 @@
 	  is able to reset state and travel to a "specific point in time" by playing back the signals up to a certain
 	  signal.
 	*/
-	var uuid = __webpack_require__(304)
+	var uuid = __webpack_require__(302)
 	
 	module.exports = function SignalStore () {
 	  return function (module, controller) {
@@ -30586,8 +30453,8 @@
 	    var asyncActionsRunning = []
 	
 	    if (controller.addContextProvider) {
-	      controller.addContextProvider(__webpack_require__(306))
-	      controller.addContextProvider(__webpack_require__(307))
+	      controller.addContextProvider(__webpack_require__(304))
+	      controller.addContextProvider(__webpack_require__(305))
 	    }
 	
 	    var addAsyncAction = function (action) {
@@ -30748,7 +30615,7 @@
 
 
 /***/ },
-/* 304 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//     uuid.js
@@ -30759,7 +30626,7 @@
 	// Unique ID creation requires a high quality random # generator.  We feature
 	// detect to determine the best RNG source, normalizing to a function that
 	// returns 128-bits of randomness, since that's what's usually required
-	var _rng = __webpack_require__(305);
+	var _rng = __webpack_require__(303);
 	
 	// Maps for number <-> hex string conversion
 	var _byteToHex = [];
@@ -30937,7 +30804,7 @@
 
 
 /***/ },
-/* 305 */
+/* 303 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -30975,7 +30842,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 306 */
+/* 304 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -30985,7 +30852,7 @@
 
 
 /***/ },
-/* 307 */
+/* 305 */
 /***/ function(module, exports) {
 
 	/*
@@ -31031,7 +30898,7 @@
 
 
 /***/ },
-/* 308 */
+/* 306 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {module.exports = {
@@ -31058,7 +30925,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 309 */
+/* 307 */
 /***/ function(module, exports) {
 
 	var convertServices = function (action, path, modulesPaths, services) {
@@ -31108,7 +30975,7 @@
 
 
 /***/ },
-/* 310 */
+/* 308 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31136,7 +31003,7 @@
 
 
 /***/ },
-/* 311 */
+/* 309 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31146,7 +31013,7 @@
 
 
 /***/ },
-/* 312 */
+/* 310 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31157,11 +31024,11 @@
 
 
 /***/ },
-/* 313 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MODULE = 'cerebral-module-recorder'
-	var signals = __webpack_require__(314)
+	var signals = __webpack_require__(312)
 	
 	module.exports = function (options) {
 	  options = options || {}
@@ -31343,9 +31210,9 @@
 	      path: module.path
 	    }
 	    controller.addContextProvider(context)
-	    controller.addContextProvider(__webpack_require__(307))
-	    controller.addContextProvider(__webpack_require__(306))
-	    controller.addContextProvider(__webpack_require__(315)({
+	    controller.addContextProvider(__webpack_require__(305))
+	    controller.addContextProvider(__webpack_require__(304))
+	    controller.addContextProvider(__webpack_require__(313)({
 	      count: runningSignalCount
 	    }))
 	
@@ -31380,7 +31247,7 @@
 
 
 /***/ },
-/* 314 */
+/* 312 */
 /***/ function(module, exports) {
 
 	var MODULE = 'cerebral-module-recorder'
@@ -31495,7 +31362,7 @@
 
 
 /***/ },
-/* 315 */
+/* 313 */
 /***/ function(module, exports) {
 
 	module.exports = function (clojure) {
@@ -31509,17 +31376,17 @@
 
 
 /***/ },
-/* 316 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MODULE = 'cerebral-module-router'
-	var isObject = __webpack_require__(317)
-	var get = __webpack_require__(318)
+	var isObject = __webpack_require__(315)
+	var get = __webpack_require__(316)
 	
-	var Mapper = __webpack_require__(322)
+	var Mapper = __webpack_require__(320)
 	var addressbar
 	try {
-	  addressbar = __webpack_require__(328)
+	  addressbar = __webpack_require__(326)
 	} catch (e) {
 	  addressbar = {
 	    pathname: '/',
@@ -31764,7 +31631,7 @@
 
 
 /***/ },
-/* 317 */
+/* 315 */
 /***/ function(module, exports) {
 
 	/**
@@ -31807,7 +31674,7 @@
 
 
 /***/ },
-/* 318 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31818,7 +31685,7 @@
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
-	var stringToPath = __webpack_require__(319);
+	var stringToPath = __webpack_require__(317);
 	
 	/** Used as references for various `Number` constants. */
 	var INFINITY = 1 / 0;
@@ -32019,7 +31886,7 @@
 
 
 /***/ },
-/* 319 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -32030,7 +31897,7 @@
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
-	var baseToString = __webpack_require__(321);
+	var baseToString = __webpack_require__(319);
 	
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -32765,10 +32632,10 @@
 	
 	module.exports = stringToPath;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(320)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(318)(module), (function() { return this; }())))
 
 /***/ },
-/* 320 */
+/* 318 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -32784,7 +32651,7 @@
 
 
 /***/ },
-/* 321 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -32941,15 +32808,15 @@
 	
 	module.exports = baseToString;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(320)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(318)(module), (function() { return this; }())))
 
 /***/ },
-/* 322 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
-	var mapper = __webpack_require__(323)
-	var compileRoute = __webpack_require__(324)
+	var mapper = __webpack_require__(321)
+	var compileRoute = __webpack_require__(322)
 	
 	module.exports = function urlMapper (options) {
 	  return mapper(compileRoute, options)
@@ -32957,7 +32824,7 @@
 
 
 /***/ },
-/* 323 */
+/* 321 */
 /***/ function(module, exports) {
 
 	module.exports = function mapper (compileFn, options) {
@@ -33010,12 +32877,12 @@
 
 
 /***/ },
-/* 324 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
-	var URLON = __webpack_require__(325)
-	var pathToRegexp = __webpack_require__(326)
+	var URLON = __webpack_require__(323)
+	var pathToRegexp = __webpack_require__(324)
 	
 	function compileRoute (route, options) {
 	  var re
@@ -33101,7 +32968,7 @@
 
 
 /***/ },
-/* 325 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var URLON = {
@@ -33230,10 +33097,10 @@
 
 
 /***/ },
-/* 326 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isarray = __webpack_require__(327)
+	var isarray = __webpack_require__(325)
 	
 	/**
 	 * Expose `pathToRegexp`.
@@ -33662,7 +33529,7 @@
 
 
 /***/ },
-/* 327 */
+/* 325 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -33671,12 +33538,12 @@
 
 
 /***/ },
-/* 328 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/* global history */
 	
-	var URL = __webpack_require__(329)
+	var URL = __webpack_require__(327)
 	var EventEmitter = __webpack_require__(242).EventEmitter
 	var instance = null
 	
@@ -33898,14 +33765,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 329 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var required = __webpack_require__(330)
-	  , lolcation = __webpack_require__(331)
-	  , qs = __webpack_require__(332)
+	var required = __webpack_require__(328)
+	  , lolcation = __webpack_require__(329)
+	  , qs = __webpack_require__(330)
 	  , relativere = /^\/(?!\/)/
 	  , protocolre = /^([a-z0-9.+-]+:)?(\/\/)?(.*)$/i; // actual protocol is first match
 	
@@ -34173,7 +34040,7 @@
 
 
 /***/ },
-/* 330 */
+/* 328 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -34217,7 +34084,7 @@
 
 
 /***/ },
-/* 331 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -34249,7 +34116,7 @@
 	 */
 	module.exports = function lolcation(loc) {
 	  loc = loc || global.location || {};
-	  URL = URL || __webpack_require__(329);
+	  URL = URL || __webpack_require__(327);
 	
 	  var finaldestination = {}
 	    , type = typeof loc
@@ -34277,7 +34144,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 332 */
+/* 330 */
 /***/ function(module, exports) {
 
 	'use strict';
