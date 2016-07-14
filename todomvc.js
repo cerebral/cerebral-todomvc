@@ -28612,10 +28612,13 @@
 	  componentWillMount: function () {
 	    this.props.controller.on('flush', this.onCerebralUpdate)
 	  },
+	  componentDidMount: function () {
+	    this.onCerebralUpdate({}, true)
+	  },
 	  extractComponentName: function (component) {
 	    return component.constructor.displayName.replace('CerebralWrapping_', '')
 	  },
-	  onCerebralUpdate: function (changes) {
+	  onCerebralUpdate: function (changes, force) {
 	    var componentsMap = this.componentsMap
 	    function traverse (level, currentPath, componentsToRender) {
 	      Object.keys(level).forEach(function (key) {
@@ -28643,7 +28646,7 @@
 	    })
 	    var end = Date.now()
 	
-	    if (window && process.env.NODE_ENV !== 'production' && componentsToRender.length) {
+	    if (window && process.env.NODE_ENV !== 'production' && (componentsToRender.length || force)) {
 	      var container = this
 	      var devtoolsComponentsMap = Object.keys(componentsMap).reduce(function (devtoolsComponentsMap, key) {
 	        devtoolsComponentsMap[key] = componentsMap[key].map(container.extractComponentName)
@@ -29866,7 +29869,7 @@
 /* 285 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29875,12 +29878,8 @@
 	  var input = _ref.input;
 	  var state = _ref.state;
 	
-	  var todo = state.select('app.list.todos.' + input.ref);
-	
-	  todo.merge({
-	    $isEditing: false
-	  });
-	  todo.unset('$newTitle');
+	  state.set("app.list.todos." + input.ref + ".$isEditing", false);
+	  state.unset("app.list.todos." + input.ref + ".$newTitle");
 	}
 	
 	exports.default = stopEditingTodo;
