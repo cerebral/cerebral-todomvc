@@ -64,33 +64,33 @@
 	
 	var _cerebral = __webpack_require__(181);
 	
-	var _immutable = __webpack_require__(244);
+	var _immutable = __webpack_require__(209);
 	
 	var _immutable2 = _interopRequireDefault(_immutable);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
-	var _App = __webpack_require__(260);
+	var _App = __webpack_require__(224);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _app = __webpack_require__(270);
+	var _app = __webpack_require__(234);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	var _refs = __webpack_require__(322);
+	var _refs = __webpack_require__(393);
 	
 	var _refs2 = _interopRequireDefault(_refs);
 	
-	var _cerebralModuleDevtools = __webpack_require__(323);
+	var _cerebralModuleDevtools = __webpack_require__(394);
 	
 	var _cerebralModuleDevtools2 = _interopRequireDefault(_cerebralModuleDevtools);
 	
-	var _cerebralModuleRecorder = __webpack_require__(334);
+	var _cerebralModuleRecorder = __webpack_require__(405);
 	
 	var _cerebralModuleRecorder2 = _interopRequireDefault(_cerebralModuleRecorder);
 	
-	var _cerebralModuleRouter = __webpack_require__(337);
+	var _cerebralModuleRouter = __webpack_require__(408);
 	
 	var _cerebralModuleRouter2 = _interopRequireDefault(_cerebralModuleRouter);
 	
@@ -21589,10 +21589,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var get = __webpack_require__(182)
-	var CreateSignalFactory = __webpack_require__(230)
-	var CreateRegisterModules = __webpack_require__(241)
-	var EventEmitter = __webpack_require__(242).EventEmitter
-	var Computed = __webpack_require__(243)
+	var CreateSignalFactory = __webpack_require__(195)
+	var CreateRegisterModules = __webpack_require__(206)
+	var EventEmitter = __webpack_require__(207).EventEmitter
+	var Computed = __webpack_require__(208)
 	
 	var Controller = function (Model) {
 	  var controller = new EventEmitter()
@@ -21727,15 +21727,14 @@
 	
 	/**
 	 * Gets the value at `path` of `object`. If the resolved value is
-	 * `undefined`, the `defaultValue` is used in its place.
+	 * `undefined` the `defaultValue` is used in its place.
 	 *
 	 * @static
 	 * @memberOf _
-	 * @since 3.7.0
 	 * @category Object
 	 * @param {Object} object The object to query.
 	 * @param {Array|string} path The path of the property to get.
-	 * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+	 * @param {*} [defaultValue] The value returned if the resolved value is `undefined`.
 	 * @returns {*} Returns the resolved value.
 	 * @example
 	 *
@@ -21762,9 +21761,8 @@
 /* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var castPath = __webpack_require__(184),
-	    isKey = __webpack_require__(228),
-	    toKey = __webpack_require__(229);
+	var baseCastPath = __webpack_require__(184),
+	    isKey = __webpack_require__(194);
 	
 	/**
 	 * The base implementation of `_.get` without support for default values.
@@ -21775,13 +21773,13 @@
 	 * @returns {*} Returns the resolved value.
 	 */
 	function baseGet(object, path) {
-	  path = isKey(path, object) ? [path] : castPath(path);
+	  path = isKey(path, object) ? [path + ''] : baseCastPath(path);
 	
 	  var index = 0,
 	      length = path.length;
 	
 	  while (object != null && index < length) {
-	    object = object[toKey(path[index++])];
+	    object = object[path[index++]];
 	  }
 	  return (index && index == length) ? object : undefined;
 	}
@@ -21803,11 +21801,11 @@
 	 * @param {*} value The value to inspect.
 	 * @returns {Array} Returns the cast property path array.
 	 */
-	function castPath(value) {
+	function baseCastPath(value) {
 	  return isArray(value) ? value : stringToPath(value);
 	}
 	
-	module.exports = castPath;
+	module.exports = baseCastPath;
 
 
 /***/ },
@@ -21819,12 +21817,10 @@
 	 *
 	 * @static
 	 * @memberOf _
-	 * @since 0.1.0
 	 * @type {Function}
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified,
-	 *  else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
 	 * @example
 	 *
 	 * _.isArray([1, 2, 3]);
@@ -21848,11 +21844,10 @@
 /* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var memoize = __webpack_require__(187),
-	    toString = __webpack_require__(223);
+	var toString = __webpack_require__(187);
 	
 	/** Used to match property names within property paths. */
-	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]/g;
 	
 	/** Used to match backslashes in property paths. */
 	var reEscapeChar = /\\(\\)?/g;
@@ -21864,13 +21859,13 @@
 	 * @param {string} string The string to convert.
 	 * @returns {Array} Returns the property path array.
 	 */
-	var stringToPath = memoize(function(string) {
+	function stringToPath(string) {
 	  var result = [];
 	  toString(string).replace(rePropName, function(match, number, quote, string) {
 	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
 	  });
 	  return result;
-	});
+	}
 	
 	module.exports = stringToPath;
 
@@ -21879,465 +21874,132 @@
 /* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(188);
+	var Symbol = __webpack_require__(188),
+	    isSymbol = __webpack_require__(192);
 	
-	/** Used as the `TypeError` message for "Functions" methods. */
-	var FUNC_ERROR_TEXT = 'Expected a function';
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+	
+	/** Used to convert symbols to primitives and strings. */
+	var symbolProto = Symbol ? Symbol.prototype : undefined,
+	    symbolToString = symbolProto ? symbolProto.toString : undefined;
 	
 	/**
-	 * Creates a function that memoizes the result of `func`. If `resolver` is
-	 * provided, it determines the cache key for storing the result based on the
-	 * arguments provided to the memoized function. By default, the first argument
-	 * provided to the memoized function is used as the map cache key. The `func`
-	 * is invoked with the `this` binding of the memoized function.
-	 *
-	 * **Note:** The cache is exposed as the `cache` property on the memoized
-	 * function. Its creation may be customized by replacing the `_.memoize.Cache`
-	 * constructor with one whose instances implement the
-	 * [`Map`](http://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-map-prototype-object)
-	 * method interface of `delete`, `get`, `has`, and `set`.
+	 * Converts `value` to a string if it's not one. An empty string is returned
+	 * for `null` and `undefined` values. The sign of `-0` is preserved.
 	 *
 	 * @static
 	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Function
-	 * @param {Function} func The function to have its output memoized.
-	 * @param {Function} [resolver] The function to resolve the cache key.
-	 * @returns {Function} Returns the new memoized function.
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
 	 * @example
 	 *
-	 * var object = { 'a': 1, 'b': 2 };
-	 * var other = { 'c': 3, 'd': 4 };
+	 * _.toString(null);
+	 * // => ''
 	 *
-	 * var values = _.memoize(_.values);
-	 * values(object);
-	 * // => [1, 2]
+	 * _.toString(-0);
+	 * // => '-0'
 	 *
-	 * values(other);
-	 * // => [3, 4]
-	 *
-	 * object.a = 2;
-	 * values(object);
-	 * // => [1, 2]
-	 *
-	 * // Modify the result cache.
-	 * values.cache.set(object, ['a', 'b']);
-	 * values(object);
-	 * // => ['a', 'b']
-	 *
-	 * // Replace `_.memoize.Cache`.
-	 * _.memoize.Cache = WeakMap;
+	 * _.toString([1, 2, 3]);
+	 * // => '1,2,3'
 	 */
-	function memoize(func, resolver) {
-	  if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
-	    throw new TypeError(FUNC_ERROR_TEXT);
+	function toString(value) {
+	  // Exit early for strings to avoid a performance hit in some environments.
+	  if (typeof value == 'string') {
+	    return value;
 	  }
-	  var memoized = function() {
-	    var args = arguments,
-	        key = resolver ? resolver.apply(this, args) : args[0],
-	        cache = memoized.cache;
-	
-	    if (cache.has(key)) {
-	      return cache.get(key);
-	    }
-	    var result = func.apply(this, args);
-	    memoized.cache = cache.set(key, result);
-	    return result;
-	  };
-	  memoized.cache = new (memoize.Cache || MapCache);
-	  return memoized;
+	  if (value == null) {
+	    return '';
+	  }
+	  if (isSymbol(value)) {
+	    return symbolToString ? symbolToString.call(value) : '';
+	  }
+	  var result = (value + '');
+	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
 	}
 	
-	// Assign cache to `_.memoize`.
-	memoize.Cache = MapCache;
-	
-	module.exports = memoize;
+	module.exports = toString;
 
 
 /***/ },
 /* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mapCacheClear = __webpack_require__(189),
-	    mapCacheDelete = __webpack_require__(217),
-	    mapCacheGet = __webpack_require__(220),
-	    mapCacheHas = __webpack_require__(221),
-	    mapCacheSet = __webpack_require__(222);
+	var root = __webpack_require__(189);
 	
-	/**
-	 * Creates a map cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function MapCache(entries) {
-	  var index = -1,
-	      length = entries ? entries.length : 0;
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
 	
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-	
-	// Add methods to `MapCache`.
-	MapCache.prototype.clear = mapCacheClear;
-	MapCache.prototype['delete'] = mapCacheDelete;
-	MapCache.prototype.get = mapCacheGet;
-	MapCache.prototype.has = mapCacheHas;
-	MapCache.prototype.set = mapCacheSet;
-	
-	module.exports = MapCache;
+	module.exports = Symbol;
 
 
 /***/ },
 /* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Hash = __webpack_require__(190),
-	    ListCache = __webpack_require__(208),
-	    Map = __webpack_require__(216);
+	/* WEBPACK VAR INJECTION */(function(module, global) {var checkGlobal = __webpack_require__(191);
+	
+	/** Used to determine if values are of the language type `Object`. */
+	var objectTypes = {
+	  'function': true,
+	  'object': true
+	};
+	
+	/** Detect free variable `exports`. */
+	var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
+	  ? exports
+	  : undefined;
+	
+	/** Detect free variable `module`. */
+	var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
+	  ? module
+	  : undefined;
+	
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = checkGlobal(objectTypes[typeof self] && self);
+	
+	/** Detect free variable `window`. */
+	var freeWindow = checkGlobal(objectTypes[typeof window] && window);
+	
+	/** Detect `this` as the global object. */
+	var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
 	
 	/**
-	 * Removes all key-value entries from the map.
+	 * Used as a reference to the global object.
 	 *
-	 * @private
-	 * @name clear
-	 * @memberOf MapCache
+	 * The `this` value is used if it's the global object to avoid Greasemonkey's
+	 * restricted `window` object, otherwise the `window` object is used.
 	 */
-	function mapCacheClear() {
-	  this.__data__ = {
-	    'hash': new Hash,
-	    'map': new (Map || ListCache),
-	    'string': new Hash
-	  };
-	}
+	var root = freeGlobal ||
+	  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
+	    freeSelf || thisGlobal || Function('return this')();
 	
-	module.exports = mapCacheClear;
-
+	module.exports = root;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(190)(module), (function() { return this; }())))
 
 /***/ },
 /* 190 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var hashClear = __webpack_require__(191),
-	    hashDelete = __webpack_require__(204),
-	    hashGet = __webpack_require__(205),
-	    hashHas = __webpack_require__(206),
-	    hashSet = __webpack_require__(207);
-	
-	/**
-	 * Creates a hash object.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function Hash(entries) {
-	  var index = -1,
-	      length = entries ? entries.length : 0;
-	
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
 	}
-	
-	// Add methods to `Hash`.
-	Hash.prototype.clear = hashClear;
-	Hash.prototype['delete'] = hashDelete;
-	Hash.prototype.get = hashGet;
-	Hash.prototype.has = hashHas;
-	Hash.prototype.set = hashSet;
-	
-	module.exports = Hash;
 
 
 /***/ },
 /* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var nativeCreate = __webpack_require__(192);
-	
-	/**
-	 * Removes all key-value entries from the hash.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf Hash
-	 */
-	function hashClear() {
-	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
-	}
-	
-	module.exports = hashClear;
-
-
-/***/ },
-/* 192 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getNative = __webpack_require__(193);
-	
-	/* Built-in method references that are verified to be native. */
-	var nativeCreate = getNative(Object, 'create');
-	
-	module.exports = nativeCreate;
-
-
-/***/ },
-/* 193 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseIsNative = __webpack_require__(194),
-	    getValue = __webpack_require__(203);
-	
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = getValue(object, key);
-	  return baseIsNative(value) ? value : undefined;
-	}
-	
-	module.exports = getNative;
-
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isFunction = __webpack_require__(195),
-	    isHostObject = __webpack_require__(197),
-	    isMasked = __webpack_require__(198),
-	    isObject = __webpack_require__(196),
-	    toSource = __webpack_require__(202);
-	
-	/**
-	 * Used to match `RegExp`
-	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
-	 */
-	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-	
-	/** Used to detect host constructors (Safari). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
-	
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = Function.prototype.toString;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-	
-	/**
-	 * The base implementation of `_.isNative` without bad shim checks.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function,
-	 *  else `false`.
-	 */
-	function baseIsNative(value) {
-	  if (!isObject(value) || isMasked(value)) {
-	    return false;
-	  }
-	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
-	  return pattern.test(toSource(value));
-	}
-	
-	module.exports = baseIsNative;
-
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObject = __webpack_require__(196);
-	
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]',
-	    genTag = '[object GeneratorFunction]';
-	
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-	
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
-	
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified,
-	 *  else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
-	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
-	  var tag = isObject(value) ? objectToString.call(value) : '';
-	  return tag == funcTag || tag == genTag;
-	}
-	
-	module.exports = isFunction;
-
-
-/***/ },
-/* 196 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is the
-	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
-	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-	 * @example
-	 *
-	 * _.isObject({});
-	 * // => true
-	 *
-	 * _.isObject([1, 2, 3]);
-	 * // => true
-	 *
-	 * _.isObject(_.noop);
-	 * // => true
-	 *
-	 * _.isObject(null);
-	 * // => false
-	 */
-	function isObject(value) {
-	  var type = typeof value;
-	  return !!value && (type == 'object' || type == 'function');
-	}
-	
-	module.exports = isObject;
-
-
-/***/ },
-/* 197 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is a host object in IE < 9.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-	 */
-	function isHostObject(value) {
-	  // Many host objects are `Object` objects that can coerce to strings
-	  // despite having improperly defined `toString` methods.
-	  var result = false;
-	  if (value != null && typeof value.toString != 'function') {
-	    try {
-	      result = !!(value + '');
-	    } catch (e) {}
-	  }
-	  return result;
-	}
-	
-	module.exports = isHostObject;
-
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var coreJsData = __webpack_require__(199);
-	
-	/** Used to detect methods masquerading as native. */
-	var maskSrcKey = (function() {
-	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-	  return uid ? ('Symbol(src)_1.' + uid) : '';
-	}());
-	
-	/**
-	 * Checks if `func` has its source masked.
-	 *
-	 * @private
-	 * @param {Function} func The function to check.
-	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
-	 */
-	function isMasked(func) {
-	  return !!maskSrcKey && (maskSrcKey in func);
-	}
-	
-	module.exports = isMasked;
-
-
-/***/ },
-/* 199 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var root = __webpack_require__(200);
-	
-	/** Used to detect overreaching core-js shims. */
-	var coreJsData = root['__core-js_shared__'];
-	
-	module.exports = coreJsData;
-
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {var checkGlobal = __webpack_require__(201);
-	
-	/** Detect free variable `global` from Node.js. */
-	var freeGlobal = checkGlobal(typeof global == 'object' && global);
-	
-	/** Detect free variable `self`. */
-	var freeSelf = checkGlobal(typeof self == 'object' && self);
-	
-	/** Detect `this` as the global object. */
-	var thisGlobal = checkGlobal(typeof this == 'object' && this);
-	
-	/** Used as a reference to the global object. */
-	var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
-	
-	module.exports = root;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 201 */
 /***/ function(module, exports) {
 
 	/**
@@ -22355,647 +22017,10 @@
 
 
 /***/ },
-/* 202 */
-/***/ function(module, exports) {
-
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = Function.prototype.toString;
-	
-	/**
-	 * Converts `func` to its source code.
-	 *
-	 * @private
-	 * @param {Function} func The function to process.
-	 * @returns {string} Returns the source code.
-	 */
-	function toSource(func) {
-	  if (func != null) {
-	    try {
-	      return funcToString.call(func);
-	    } catch (e) {}
-	    try {
-	      return (func + '');
-	    } catch (e) {}
-	  }
-	  return '';
-	}
-	
-	module.exports = toSource;
-
-
-/***/ },
-/* 203 */
-/***/ function(module, exports) {
-
-	/**
-	 * Gets the value at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} [object] The object to query.
-	 * @param {string} key The key of the property to get.
-	 * @returns {*} Returns the property value.
-	 */
-	function getValue(object, key) {
-	  return object == null ? undefined : object[key];
-	}
-	
-	module.exports = getValue;
-
-
-/***/ },
-/* 204 */
-/***/ function(module, exports) {
-
-	/**
-	 * Removes `key` and its value from the hash.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf Hash
-	 * @param {Object} hash The hash to modify.
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function hashDelete(key) {
-	  return this.has(key) && delete this.__data__[key];
-	}
-	
-	module.exports = hashDelete;
-
-
-/***/ },
-/* 205 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(192);
-	
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
-	
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Gets the hash value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf Hash
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function hashGet(key) {
-	  var data = this.__data__;
-	  if (nativeCreate) {
-	    var result = data[key];
-	    return result === HASH_UNDEFINED ? undefined : result;
-	  }
-	  return hasOwnProperty.call(data, key) ? data[key] : undefined;
-	}
-	
-	module.exports = hashGet;
-
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var nativeCreate = __webpack_require__(192);
-	
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-	
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-	
-	/**
-	 * Checks if a hash value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf Hash
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function hashHas(key) {
-	  var data = this.__data__;
-	  return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
-	}
-	
-	module.exports = hashHas;
-
-
-/***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var nativeCreate = __webpack_require__(192);
-	
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
-	
-	/**
-	 * Sets the hash `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf Hash
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the hash instance.
-	 */
-	function hashSet(key, value) {
-	  var data = this.__data__;
-	  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
-	  return this;
-	}
-	
-	module.exports = hashSet;
-
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var listCacheClear = __webpack_require__(209),
-	    listCacheDelete = __webpack_require__(210),
-	    listCacheGet = __webpack_require__(213),
-	    listCacheHas = __webpack_require__(214),
-	    listCacheSet = __webpack_require__(215);
-	
-	/**
-	 * Creates an list cache object.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function ListCache(entries) {
-	  var index = -1,
-	      length = entries ? entries.length : 0;
-	
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-	
-	// Add methods to `ListCache`.
-	ListCache.prototype.clear = listCacheClear;
-	ListCache.prototype['delete'] = listCacheDelete;
-	ListCache.prototype.get = listCacheGet;
-	ListCache.prototype.has = listCacheHas;
-	ListCache.prototype.set = listCacheSet;
-	
-	module.exports = ListCache;
-
-
-/***/ },
-/* 209 */
-/***/ function(module, exports) {
-
-	/**
-	 * Removes all key-value entries from the list cache.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf ListCache
-	 */
-	function listCacheClear() {
-	  this.__data__ = [];
-	}
-	
-	module.exports = listCacheClear;
-
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var assocIndexOf = __webpack_require__(211);
-	
-	/** Used for built-in method references. */
-	var arrayProto = Array.prototype;
-	
-	/** Built-in value references. */
-	var splice = arrayProto.splice;
-	
-	/**
-	 * Removes `key` and its value from the list cache.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function listCacheDelete(key) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
-	
-	  if (index < 0) {
-	    return false;
-	  }
-	  var lastIndex = data.length - 1;
-	  if (index == lastIndex) {
-	    data.pop();
-	  } else {
-	    splice.call(data, index, 1);
-	  }
-	  return true;
-	}
-	
-	module.exports = listCacheDelete;
-
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var eq = __webpack_require__(212);
-	
-	/**
-	 * Gets the index at which the `key` is found in `array` of key-value pairs.
-	 *
-	 * @private
-	 * @param {Array} array The array to search.
-	 * @param {*} key The key to search for.
-	 * @returns {number} Returns the index of the matched value, else `-1`.
-	 */
-	function assocIndexOf(array, key) {
-	  var length = array.length;
-	  while (length--) {
-	    if (eq(array[length][0], key)) {
-	      return length;
-	    }
-	  }
-	  return -1;
-	}
-	
-	module.exports = assocIndexOf;
-
-
-/***/ },
-/* 212 */
-/***/ function(module, exports) {
-
-	/**
-	 * Performs a
-	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
-	 * comparison between two values to determine if they are equivalent.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to compare.
-	 * @param {*} other The other value to compare.
-	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
-	 * @example
-	 *
-	 * var object = { 'user': 'fred' };
-	 * var other = { 'user': 'fred' };
-	 *
-	 * _.eq(object, object);
-	 * // => true
-	 *
-	 * _.eq(object, other);
-	 * // => false
-	 *
-	 * _.eq('a', 'a');
-	 * // => true
-	 *
-	 * _.eq('a', Object('a'));
-	 * // => false
-	 *
-	 * _.eq(NaN, NaN);
-	 * // => true
-	 */
-	function eq(value, other) {
-	  return value === other || (value !== value && other !== other);
-	}
-	
-	module.exports = eq;
-
-
-/***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var assocIndexOf = __webpack_require__(211);
-	
-	/**
-	 * Gets the list cache value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function listCacheGet(key) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
-	
-	  return index < 0 ? undefined : data[index][1];
-	}
-	
-	module.exports = listCacheGet;
-
-
-/***/ },
-/* 214 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var assocIndexOf = __webpack_require__(211);
-	
-	/**
-	 * Checks if a list cache value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf ListCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function listCacheHas(key) {
-	  return assocIndexOf(this.__data__, key) > -1;
-	}
-	
-	module.exports = listCacheHas;
-
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var assocIndexOf = __webpack_require__(211);
-	
-	/**
-	 * Sets the list cache `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the list cache instance.
-	 */
-	function listCacheSet(key, value) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
-	
-	  if (index < 0) {
-	    data.push([key, value]);
-	  } else {
-	    data[index][1] = value;
-	  }
-	  return this;
-	}
-	
-	module.exports = listCacheSet;
-
-
-/***/ },
-/* 216 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getNative = __webpack_require__(193),
-	    root = __webpack_require__(200);
-	
-	/* Built-in method references that are verified to be native. */
-	var Map = getNative(root, 'Map');
-	
-	module.exports = Map;
-
-
-/***/ },
-/* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getMapData = __webpack_require__(218);
-	
-	/**
-	 * Removes `key` and its value from the map.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function mapCacheDelete(key) {
-	  return getMapData(this, key)['delete'](key);
-	}
-	
-	module.exports = mapCacheDelete;
-
-
-/***/ },
-/* 218 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isKeyable = __webpack_require__(219);
-	
-	/**
-	 * Gets the data for `map`.
-	 *
-	 * @private
-	 * @param {Object} map The map to query.
-	 * @param {string} key The reference key.
-	 * @returns {*} Returns the map data.
-	 */
-	function getMapData(map, key) {
-	  var data = map.__data__;
-	  return isKeyable(key)
-	    ? data[typeof key == 'string' ? 'string' : 'hash']
-	    : data.map;
-	}
-	
-	module.exports = getMapData;
-
-
-/***/ },
-/* 219 */
-/***/ function(module, exports) {
-
-	/**
-	 * Checks if `value` is suitable for use as unique object key.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
-	 */
-	function isKeyable(value) {
-	  var type = typeof value;
-	  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
-	    ? (value !== '__proto__')
-	    : (value === null);
-	}
-	
-	module.exports = isKeyable;
-
-
-/***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getMapData = __webpack_require__(218);
-	
-	/**
-	 * Gets the map value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function mapCacheGet(key) {
-	  return getMapData(this, key).get(key);
-	}
-	
-	module.exports = mapCacheGet;
-
-
-/***/ },
-/* 221 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getMapData = __webpack_require__(218);
-	
-	/**
-	 * Checks if a map value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf MapCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function mapCacheHas(key) {
-	  return getMapData(this, key).has(key);
-	}
-	
-	module.exports = mapCacheHas;
-
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var getMapData = __webpack_require__(218);
-	
-	/**
-	 * Sets the map `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the map cache instance.
-	 */
-	function mapCacheSet(key, value) {
-	  getMapData(this, key).set(key, value);
-	  return this;
-	}
-	
-	module.exports = mapCacheSet;
-
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var baseToString = __webpack_require__(224);
-	
-	/**
-	 * Converts `value` to a string. An empty string is returned for `null`
-	 * and `undefined` values. The sign of `-0` is preserved.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 * @example
-	 *
-	 * _.toString(null);
-	 * // => ''
-	 *
-	 * _.toString(-0);
-	 * // => '-0'
-	 *
-	 * _.toString([1, 2, 3]);
-	 * // => '1,2,3'
-	 */
-	function toString(value) {
-	  return value == null ? '' : baseToString(value);
-	}
-	
-	module.exports = toString;
-
-
-/***/ },
-/* 224 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Symbol = __webpack_require__(225),
-	    isSymbol = __webpack_require__(226);
-	
-	/** Used as references for various `Number` constants. */
-	var INFINITY = 1 / 0;
-	
-	/** Used to convert symbols to primitives and strings. */
-	var symbolProto = Symbol ? Symbol.prototype : undefined,
-	    symbolToString = symbolProto ? symbolProto.toString : undefined;
-	
-	/**
-	 * The base implementation of `_.toString` which doesn't convert nullish
-	 * values to empty strings.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  // Exit early for strings to avoid a performance hit in some environments.
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  if (isSymbol(value)) {
-	    return symbolToString ? symbolToString.call(value) : '';
-	  }
-	  var result = (value + '');
-	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
-	}
-	
-	module.exports = baseToString;
-
-
-/***/ },
-/* 225 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var root = __webpack_require__(200);
-	
-	/** Built-in value references. */
-	var Symbol = root.Symbol;
-	
-	module.exports = Symbol;
-
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isObjectLike = __webpack_require__(227);
+	var isObjectLike = __webpack_require__(193);
 	
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -23004,8 +22029,7 @@
 	var objectProto = Object.prototype;
 	
 	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
 	 * of values.
 	 */
 	var objectToString = objectProto.toString;
@@ -23015,11 +22039,9 @@
 	 *
 	 * @static
 	 * @memberOf _
-	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is correctly classified,
-	 *  else `false`.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
 	 * @example
 	 *
 	 * _.isSymbol(Symbol.iterator);
@@ -23037,7 +22059,7 @@
 
 
 /***/ },
-/* 227 */
+/* 193 */
 /***/ function(module, exports) {
 
 	/**
@@ -23046,7 +22068,6 @@
 	 *
 	 * @static
 	 * @memberOf _
-	 * @since 4.0.0
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -23072,11 +22093,10 @@
 
 
 /***/ },
-/* 228 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(185),
-	    isSymbol = __webpack_require__(226);
+	var isArray = __webpack_require__(185);
 	
 	/** Used to match property names within property paths. */
 	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
@@ -23091,61 +22111,30 @@
 	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
 	 */
 	function isKey(value, object) {
-	  if (isArray(value)) {
-	    return false;
-	  }
-	  var type = typeof value;
-	  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
-	      value == null || isSymbol(value)) {
+	  if (typeof value == 'number') {
 	    return true;
 	  }
-	  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
-	    (object != null && value in Object(object));
+	  return !isArray(value) &&
+	    (reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+	      (object != null && value in Object(object)));
 	}
 	
 	module.exports = isKey;
 
 
 /***/ },
-/* 229 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isSymbol = __webpack_require__(226);
-	
-	/** Used as references for various `Number` constants. */
-	var INFINITY = 1 / 0;
-	
-	/**
-	 * Converts `value` to a string key if it's not a string or symbol.
-	 *
-	 * @private
-	 * @param {*} value The value to inspect.
-	 * @returns {string|symbol} Returns the key.
-	 */
-	function toKey(value) {
-	  if (typeof value == 'string' || isSymbol(value)) {
-	    return value;
-	  }
-	  var result = (value + '');
-	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
-	}
-	
-	module.exports = toKey;
-
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {var utils = __webpack_require__(231)
-	var analyze = __webpack_require__(233)
-	var staticTree = __webpack_require__(234)
-	var createContext = __webpack_require__(235)
-	var inputProvider = __webpack_require__(236)
-	var stateProvider = __webpack_require__(237)
-	var servicesProvider = __webpack_require__(238)
-	var outputProvider = __webpack_require__(239)
-	var deprecationProvider = __webpack_require__(240)
+	/* WEBPACK VAR INJECTION */(function(global) {var utils = __webpack_require__(196)
+	var analyze = __webpack_require__(198)
+	var staticTree = __webpack_require__(199)
+	var createContext = __webpack_require__(200)
+	var inputProvider = __webpack_require__(201)
+	var stateProvider = __webpack_require__(202)
+	var servicesProvider = __webpack_require__(203)
+	var outputProvider = __webpack_require__(204)
+	var deprecationProvider = __webpack_require__(205)
 	
 	var requestAnimationFrame = global.requestAnimationFrame || function (cb) {
 	  setTimeout(cb, 0)
@@ -23454,10 +22443,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 231 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(global, process) {var types = __webpack_require__(232)
+	/* WEBPACK VAR INJECTION */(function(global, process) {var types = __webpack_require__(197)
 	
 	module.exports = {
 	  getFunctionName: function (fun) {
@@ -23568,7 +22557,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(12)))
 
 /***/ },
-/* 232 */
+/* 197 */
 /***/ function(module, exports) {
 
 	module.exports = function (type, value) {
@@ -23617,10 +22606,10 @@
 
 
 /***/ },
-/* 233 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(231)
+	var utils = __webpack_require__(196)
 	
 	module.exports = function (signalName, actions) {
 	  var traverse = function (actions, parentActions, parentIndex) {
@@ -23697,10 +22686,10 @@
 
 
 /***/ },
-/* 234 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(231)
+	var utils = __webpack_require__(196)
 	
 	var traverse = function (item, parentItem, path, actions, isSync) {
 	  var nextItem
@@ -23774,7 +22763,7 @@
 
 
 /***/ },
-/* 235 */
+/* 200 */
 /***/ function(module, exports) {
 
 	module.exports = function (contextProviders, execution, controller) {
@@ -23799,10 +22788,10 @@
 
 
 /***/ },
-/* 236 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(231)
+	var utils = __webpack_require__(196)
 	
 	module.exports = function (context, execution) {
 	  var action = execution.action
@@ -23829,7 +22818,7 @@
 
 
 /***/ },
-/* 237 */
+/* 202 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution, controller) {
@@ -23890,7 +22879,7 @@
 
 
 /***/ },
-/* 238 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution, controller) {
@@ -23901,11 +22890,11 @@
 
 
 /***/ },
-/* 239 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(231)
-	var types = __webpack_require__(232)
+	var utils = __webpack_require__(196)
+	var types = __webpack_require__(197)
 	
 	var validateOutput = function (action, path, arg, signalName) {
 	  if ((!action.options.output && !action.options.outputs) || Array.isArray(action.options.outputs)) {
@@ -24002,7 +22991,7 @@
 
 
 /***/ },
-/* 240 */
+/* 205 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution, controller) {
@@ -24025,10 +23014,10 @@
 
 
 /***/ },
-/* 241 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var utils = __webpack_require__(231)
+	var utils = __webpack_require__(196)
 	
 	module.exports = function (controller, model, allModules) {
 	  var initialState = {}
@@ -24129,7 +23118,7 @@
 
 
 /***/ },
-/* 242 */
+/* 207 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -24437,7 +23426,7 @@
 
 
 /***/ },
-/* 243 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {function getByPath (path, state) {
@@ -24452,17 +23441,24 @@
 	  return currentPath
 	}
 	
+	function traverseDepsMap (deps, cacheKey) {
+	  Object.keys(deps).forEach(function (key) {
+	    if (deps[key].getDepsMap) {
+	      traverseDepsMap(deps[key].getDepsMap(), cacheKey)
+	    } else if (!Computed.registry[deps[key]]) {
+	      Computed.registry[deps[key]] = [cacheKey]
+	    } else if (Computed.registry[deps[key]].indexOf(cacheKey) === -1) {
+	      Computed.registry[deps[key]] = Computed.registry[deps[key]].concat(cacheKey)
+	    }
+	  })
+	}
+	
 	function Computed (paths, cb) {
 	  return function (props) {
 	    var deps = typeof paths === 'function' ? paths(props) : paths
 	    var cacheKey = JSON.stringify(deps) + (props ? JSON.stringify(props) : '') + cb.toString().replace(/\s/g, '')
-	    Object.keys(deps).forEach(function (key) {
-	      if (!Computed.registry[deps[key]]) {
-	        Computed.registry[deps[key]] = [cacheKey]
-	      } else if (Computed.registry[deps[key]].indexOf(cacheKey) === -1) {
-	        Computed.registry[deps[key]] = Computed.registry[deps[key]].concat(cacheKey)
-	      }
-	    })
+	    traverseDepsMap(deps, cacheKey)
+	
 	    return {
 	      getDepsMap: function () {
 	        return deps
@@ -24534,17 +23530,17 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
-/* 244 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(245)
+	module.exports = __webpack_require__(210)
 
 
 /***/ },
-/* 245 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Baobab = __webpack_require__(246);
+	var Baobab = __webpack_require__(211);
 	function deepmerge(target, src) {
 	   var array = Array.isArray(src);
 	   var dst = array && [] || {};
@@ -24761,7 +23757,7 @@
 
 
 /***/ },
-/* 246 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24788,29 +23784,29 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _emmett = __webpack_require__(247);
+	var _emmett = __webpack_require__(212);
 	
 	var _emmett2 = _interopRequireDefault(_emmett);
 	
-	var _cursor = __webpack_require__(248);
+	var _cursor = __webpack_require__(213);
 	
 	var _cursor2 = _interopRequireDefault(_cursor);
 	
-	var _monkey = __webpack_require__(249);
+	var _monkey = __webpack_require__(214);
 	
-	var _watcher = __webpack_require__(253);
+	var _watcher = __webpack_require__(218);
 	
 	var _watcher2 = _interopRequireDefault(_watcher);
 	
-	var _type = __webpack_require__(250);
+	var _type = __webpack_require__(215);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
-	var _update2 = __webpack_require__(251);
+	var _update2 = __webpack_require__(216);
 	
 	var _update3 = _interopRequireDefault(_update2);
 	
-	var _helpers = __webpack_require__(252);
+	var _helpers = __webpack_require__(217);
 	
 	var helpers = _interopRequireWildcard(_helpers);
 	
@@ -25370,7 +24366,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 247 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function() {
@@ -25929,7 +24925,7 @@
 
 
 /***/ },
-/* 248 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -25954,17 +24950,17 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _emmett = __webpack_require__(247);
+	var _emmett = __webpack_require__(212);
 	
 	var _emmett2 = _interopRequireDefault(_emmett);
 	
-	var _monkey = __webpack_require__(249);
+	var _monkey = __webpack_require__(214);
 	
-	var _type = __webpack_require__(250);
+	var _type = __webpack_require__(215);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
-	var _helpers = __webpack_require__(252);
+	var _helpers = __webpack_require__(217);
 	
 	/**
 	 * Traversal helper function for dynamic cursors. Will throw a legible error
@@ -26819,7 +25815,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 249 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -26840,15 +25836,15 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _type = __webpack_require__(250);
+	var _type = __webpack_require__(215);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
-	var _update2 = __webpack_require__(251);
+	var _update2 = __webpack_require__(216);
 	
 	var _update3 = _interopRequireDefault(_update2);
 	
-	var _helpers = __webpack_require__(252);
+	var _helpers = __webpack_require__(217);
 	
 	/**
 	 * Monkey Definition class
@@ -27114,7 +26110,7 @@
 	exports.Monkey = Monkey;
 
 /***/ },
-/* 250 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27131,7 +26127,7 @@
 	  value: true
 	});
 	
-	var _monkey = __webpack_require__(249);
+	var _monkey = __webpack_require__(214);
 	
 	var type = {};
 	
@@ -27369,7 +26365,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 251 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27389,11 +26385,11 @@
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 	
-	var _type = __webpack_require__(250);
+	var _type = __webpack_require__(215);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
-	var _helpers = __webpack_require__(252);
+	var _helpers = __webpack_require__(217);
 	
 	function err(operation, expectedTarget, path) {
 	  return (0, _helpers.makeError)('Baobab.update: cannot apply the "' + operation + '" on ' + ('a non ' + expectedTarget + ' (path: /' + path.join('/') + ').'), { path: path });
@@ -27606,7 +26602,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 252 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/* eslint eqeqeq: 0 */
@@ -27638,9 +26634,9 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _monkey = __webpack_require__(249);
+	var _monkey = __webpack_require__(214);
 	
-	var _type = __webpack_require__(250);
+	var _type = __webpack_require__(215);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
@@ -28226,7 +27222,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 253 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28252,19 +27248,19 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _emmett = __webpack_require__(247);
+	var _emmett = __webpack_require__(212);
 	
 	var _emmett2 = _interopRequireDefault(_emmett);
 	
-	var _cursor = __webpack_require__(248);
+	var _cursor = __webpack_require__(213);
 	
 	var _cursor2 = _interopRequireDefault(_cursor);
 	
-	var _type = __webpack_require__(250);
+	var _type = __webpack_require__(215);
 	
 	var _type2 = _interopRequireDefault(_type);
 	
-	var _helpers = __webpack_require__(252);
+	var _helpers = __webpack_require__(217);
 	
 	/**
 	 * Watcher class.
@@ -28409,12 +27405,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 254 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var connect = __webpack_require__(255)
-	var container = __webpack_require__(258)
-	var link = __webpack_require__(259)
+	var connect = __webpack_require__(220)
+	var container = __webpack_require__(222)
+	var link = __webpack_require__(223)
 	
 	module.exports = {
 	  Container: container,
@@ -28424,29 +27420,33 @@
 
 
 /***/ },
-/* 255 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var HOC = __webpack_require__(256)
+	/* WEBPACK VAR INJECTION */(function(process) {var HOC = __webpack_require__(221)
 	
-	module.exports = function connect (paths, component) {
+	module.exports = function connect (paths, signals, component) {
+	  if (arguments.length === 2) {
+	    component = signals
+	    signals = null
+	  }
+	
 	  if (!component) {
 	    return function (component) {
-	      return process.env.NODE_ENV === 'test' ? component : HOC(paths, component)
+	      return process.env.NODE_ENV === 'test' ? component : HOC(paths, signals, component)
 	    }
 	  } else {
-	    return process.env.NODE_ENV === 'test' ? component : HOC(paths, component)
+	    return process.env.NODE_ENV === 'test' ? component : HOC(paths, signals, component)
 	  }
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
-/* 256 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(10)
-	var mixin = __webpack_require__(257)
 	
 	function extractDeps (deps, allDeps) {
 	  return Object.keys(deps).reduce(function (depsMap, key) {
@@ -28460,10 +27460,36 @@
 	  }, allDeps)
 	}
 	
-	module.exports = function (paths, Component) {
+	function getSignalStub (signalName) {
+	  function stubSignal () {
+	    // TODO: improve wording, provide at least component and signal names in warning
+	    console.warn('Cerebral - it is not supposed to run signals with ServerController.')
+	  }
+	
+	  stubSignal.signalName = signalName
+	
+	  return stubSignal
+	}
+	
+	module.exports = function (paths, signals, Component) {
 	  return React.createClass({
-	    displayName: 'CerebralWrapping_' + Component.name,
-	    mixins: [mixin],
+	    displayName: 'CerebralWrapping_' + (Component.displayName || Component.name),
+	
+	    contextTypes: {
+	      cerebral: React.PropTypes.object
+	    },
+	
+	    componentWillMount: function () {
+	      this.signals = this.context.cerebral.controller.isServer ? {} : this.context.cerebral.controller.getSignals()
+	      this.modules = this.context.cerebral.controller.isServer ? {} : this.context.cerebral.controller.getModules()
+	
+	      var statePaths = this.getStatePaths ? this.getStatePaths(this.props) : {}
+	      if (!Object.keys(statePaths).length) {
+	        return
+	      }
+	      this.context.cerebral.registerComponent(this, this.getDepsMap(this.props))
+	    },
+	
 	    componentWillReceiveProps: function (nextProps) {
 	      var hasChange = false
 	      var oldPropKeys = Object.keys(this.props)
@@ -28485,12 +27511,18 @@
 	        hasChange && this._update()
 	      }
 	    },
-	    getPropsWithModules: function (props) {
-	      return Object.keys(props).reduce(function (propsWithModules, key) {
-	        propsWithModules[key] = props[key]
-	        return propsWithModules
-	      }, {modules: this.modules})
+	
+	    shouldComponentUpdate: function (nextProps, nextState) {
+	      // We only allow forced render by change of props passed
+	      // or Container tells it to render
+	      return false
 	    },
+	
+	    componentWillUnmount: function () {
+	      this._isUmounting = true
+	      this.context.cerebral.unregisterComponent(this)
+	    },
+	
 	    getDepsMap: function (props) {
 	      if (!paths) {
 	        return {}
@@ -28500,6 +27532,46 @@
 	
 	      return extractDeps(deps, {})
 	    },
+	
+	    getProps: function () {
+	      var controller = this.context.cerebral.controller
+	      var props = this.props || {}
+	      var paths = this.getStatePaths ? this.getStatePaths(this.props) : {}
+	
+	      var propsToPass = Object.keys(paths || {}).reduce(function (props, key) {
+	        props[key] = paths[key].getDepsMap ? paths[key].get(controller.get()) : controller.get(paths[key])
+	        return props
+	      }, {})
+	
+	      propsToPass = Object.keys(props).reduce(function (propsToPass, key) {
+	        propsToPass[key] = props[key]
+	        return propsToPass
+	      }, propsToPass)
+	
+	      if (signals) {
+	        propsToPass = Object.keys(signals).reduce(function (props, key) {
+	          props[key] = controller.isServer
+	            ? getSignalStub(signals[key])
+	            : controller.getSignals(signals[key])
+	
+	          return props
+	        }, propsToPass)
+	      } else {
+	        // expose all signals
+	        propsToPass.signals = this.signals
+	      }
+	      propsToPass.modules = this.modules
+	
+	      return propsToPass
+	    },
+	
+	    getPropsWithModules: function (props) {
+	      return Object.keys(props).reduce(function (propsWithModules, key) {
+	        propsWithModules[key] = props[key]
+	        return propsWithModules
+	      }, {modules: this.modules})
+	    },
+	
 	    getStatePaths: function (props) {
 	      if (!paths) {
 	        return {}
@@ -28510,6 +27582,11 @@
 	      }, {modules: this.modules})
 	      return typeof paths === 'function' ? paths(propsWithModules) : paths
 	    },
+	
+	    _update: function () {
+	      this._isUmounting || this.forceUpdate()
+	    },
+	
 	    render: function () {
 	      return React.createElement(Component, this.getProps())
 	    }
@@ -28518,69 +27595,7 @@
 
 
 /***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(10)
-	
-	module.exports = {
-	  contextTypes: {
-	    cerebral: React.PropTypes.object
-	  },
-	  componentWillMount: function () {
-	    this.signals = this.context.cerebral.controller.isServer ? {} : this.context.cerebral.controller.getSignals()
-	    this.modules = this.context.cerebral.controller.isServer ? {} : this.context.cerebral.controller.getModules()
-	
-	    var statePaths = this.getStatePaths ? this.getStatePaths(this.props) : {}
-	    if (!Object.keys(statePaths).length) {
-	      return
-	    }
-	    this.context.cerebral.registerComponent(this, this.getDepsMap(this.props))
-	  },
-	  componentWillUnmount: function () {
-	    this._isUmounting = true
-	    this.context.cerebral.unregisterComponent(this)
-	  },
-	  shouldComponentUpdate: function (nextProps, nextState) {
-	    // We only allow forced render by change of props passed
-	    // or Container tells it to render
-	    return false
-	  },
-	  getProps: function () {
-	    var controller = this.context.cerebral.controller
-	    var props = this.props || {}
-	    var paths = this.getStatePaths ? this.getStatePaths(this.props) : {}
-	
-	    var propsToPass = Object.keys(paths || {}).reduce(function (props, key) {
-	      props[key] = paths[key].getDepsMap ? paths[key].get(controller.get()) : controller.get(paths[key])
-	      return props
-	    }, {})
-	
-	    propsToPass = Object.keys(props).reduce(function (propsToPass, key) {
-	      propsToPass[key] = props[key]
-	      return propsToPass
-	    }, propsToPass)
-	
-	    propsToPass.signals = this.signals
-	    propsToPass.modules = this.modules
-	
-	    return propsToPass
-	  },
-	  _update: function (showOverlay) {
-	    if (this._isUmounting) {
-	      return
-	    }
-	    if (showOverlay && !this.showingOverlay) {
-	      this.showOverlay = true
-	    }
-	
-	    this.forceUpdate()
-	  }
-	}
-
-
-/***/ },
-/* 258 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/* global CustomEvent */
@@ -28601,14 +27616,11 @@
 	        controller: this.props.controller,
 	        registerComponent: this.registerComponent,
 	        unregisterComponent: this.unregisterComponent,
-	        updateComponent: this.updateComponent,
-	        shouldShowRenderOverlays: this.shouldShowRenderOverlays
+	        updateComponent: this.updateComponent
 	      }
 	    }
 	  },
 	  componentsMap: {},
-	  overlays: {},
-	  overlaysContainer: null,
 	  componentDidMount: function () {
 	    this.onCerebralUpdate({}, true)
 	    this.props.controller.on('flush', this.onCerebralUpdate)
@@ -28694,7 +27706,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
 
 /***/ },
-/* 259 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(10)
@@ -28767,7 +27779,7 @@
 
 
 /***/ },
-/* 260 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28780,27 +27792,27 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
-	var _NewTodo = __webpack_require__(261);
+	var _NewTodo = __webpack_require__(225);
 	
 	var _NewTodo2 = _interopRequireDefault(_NewTodo);
 	
-	var _List = __webpack_require__(262);
+	var _List = __webpack_require__(226);
 	
 	var _List2 = _interopRequireDefault(_List);
 	
-	var _Footer = __webpack_require__(267);
+	var _Footer = __webpack_require__(231);
 	
 	var _Footer2 = _interopRequireDefault(_Footer);
 	
-	var _RecorderButton = __webpack_require__(269);
+	var _RecorderButton = __webpack_require__(233);
 	
 	var _RecorderButton2 = _interopRequireDefault(_RecorderButton);
 	
-	var _visibleTodos = __webpack_require__(266);
+	var _visibleTodosKeys = __webpack_require__(230);
 	
-	var _visibleTodos2 = _interopRequireDefault(_visibleTodos);
+	var _visibleTodosKeys2 = _interopRequireDefault(_visibleTodosKeys);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28808,7 +27820,7 @@
 	  todos: 'app.list.todos',
 	  recorder: 'recorder',
 	  isSaving: 'app.new.isSaving',
-	  visibleTodos: (0, _visibleTodos2.default)()
+	  visibleTodosKeys: (0, _visibleTodosKeys2.default)()
 	}, function App(props) {
 	  return _react2.default.createElement(
 	    'div',
@@ -28827,7 +27839,7 @@
 	        ),
 	        _react2.default.createElement(_NewTodo2.default, null)
 	      ),
-	      props.visibleTodos.length ? _react2.default.createElement(_List2.default, null) : null,
+	      props.visibleTodosKeys.length ? _react2.default.createElement(_List2.default, null) : null,
 	      Object.keys(props.todos).length ? _react2.default.createElement(_Footer2.default, null) : null
 	    ),
 	    _react2.default.createElement(
@@ -28864,7 +27876,7 @@
 	});
 
 /***/ },
-/* 261 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28877,22 +27889,26 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _cerebralViewReact.connect)({
 	  title: 'app.new.title'
+	}, {
+	  titleChanged: 'app.new.titleChanged',
+	  submitted: 'app.new.submitted'
 	}, function NewTodo(_ref) {
 	  var isSaving = _ref.isSaving;
 	  var title = _ref.title;
-	  var signals = _ref.signals;
+	  var titleChanged = _ref.titleChanged;
+	  var submitted = _ref.submitted;
 	
 	  return _react2.default.createElement(
 	    'form',
 	    { id: 'todo-form', onSubmit: function onSubmit(e) {
 	        e.preventDefault();
-	        signals.app.new.submitted();
+	        submitted();
 	      } },
 	    _react2.default.createElement('input', {
 	      id: 'new-todo',
@@ -28900,14 +27916,14 @@
 	      placeholder: 'What needs to be done?',
 	      value: title,
 	      onChange: function onChange(e) {
-	        return signals.app.new.titleChanged({ title: e.target.value });
+	        return titleChanged({ title: e.target.value });
 	      }
 	    })
 	  );
 	});
 
 /***/ },
-/* 262 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28920,29 +27936,31 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Todo = __webpack_require__(263);
+	var _Todo = __webpack_require__(227);
 	
 	var _Todo2 = _interopRequireDefault(_Todo);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
-	var _isAllChecked = __webpack_require__(265);
+	var _isAllChecked = __webpack_require__(229);
 	
 	var _isAllChecked2 = _interopRequireDefault(_isAllChecked);
 	
-	var _visibleTodos = __webpack_require__(266);
+	var _visibleTodosKeys = __webpack_require__(230);
 	
-	var _visibleTodos2 = _interopRequireDefault(_visibleTodos);
+	var _visibleTodosKeys2 = _interopRequireDefault(_visibleTodosKeys);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _cerebralViewReact.connect)({
 	  isAllChecked: (0, _isAllChecked2.default)(),
-	  todoKeys: (0, _visibleTodos2.default)()
+	  todoKeys: (0, _visibleTodosKeys2.default)()
+	}, {
+	  toggleAllChanged: 'app.list.toggleAllChanged'
 	}, function List(_ref) {
 	  var isAllChecked = _ref.isAllChecked;
 	  var todoKeys = _ref.todoKeys;
-	  var signals = _ref.signals;
+	  var toggleAllChanged = _ref.toggleAllChanged;
 	
 	  return _react2.default.createElement(
 	    'section',
@@ -28952,7 +27970,7 @@
 	      type: 'checkbox',
 	      checked: isAllChecked,
 	      onChange: function onChange() {
-	        return signals.app.list.toggleAllChanged();
+	        return toggleAllChanged();
 	      } }),
 	    _react2.default.createElement(
 	      'label',
@@ -28970,7 +27988,7 @@
 	});
 
 /***/ },
-/* 263 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28985,11 +28003,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _classnames = __webpack_require__(264);
+	var _classnames = __webpack_require__(228);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29003,6 +28021,13 @@
 	  return {
 	    todo: 'app.list.todos.' + props.todoKey
 	  };
+	}, {
+	  todoDoubleClicked: 'app.list.todoDoubleClicked',
+	  newTitleChanged: 'app.list.newTitleChanged',
+	  newTitleSubmitted: 'app.list.newTitleSubmitted',
+	  toggleCompletedChanged: 'app.list.toggleCompletedChanged',
+	  removeTodoClicked: 'app.list.removeTodoClicked',
+	  newTitleAborted: 'app.list.newTitleAborted'
 	}, function (_React$Component) {
 	  _inherits(Todo, _React$Component);
 	
@@ -29026,14 +28051,14 @@
 	        return;
 	      }
 	
-	      this.props.signals.app.list.todoDoubleClicked({
+	      this.props.todoDoubleClicked({
 	        ref: this.props.todo.$ref
 	      });
 	    }
 	  }, {
 	    key: 'onNewTitleChange',
 	    value: function onNewTitleChange(event) {
-	      this.props.signals.app.list.newTitleChanged({
+	      this.props.newTitleChanged({
 	        ref: this.props.todo.$ref,
 	        title: event.target.value
 	      });
@@ -29042,28 +28067,28 @@
 	    key: 'onNewTitleSubmit',
 	    value: function onNewTitleSubmit(event) {
 	      event.preventDefault();
-	      this.props.signals.app.list.newTitleSubmitted({
+	      this.props.newTitleSubmitted({
 	        ref: this.props.todo.$ref
 	      });
 	    }
 	  }, {
 	    key: 'onCompletedToggle',
 	    value: function onCompletedToggle() {
-	      this.props.signals.app.list.toggleCompletedChanged({
+	      this.props.toggleCompletedChanged({
 	        ref: this.props.todo.$ref
 	      });
 	    }
 	  }, {
 	    key: 'onRemoveClick',
 	    value: function onRemoveClick() {
-	      this.props.signals.app.list.removeTodoClicked({
+	      this.props.signals.removeTodoClicked({
 	        ref: this.props.todo.$ref
 	      });
 	    }
 	  }, {
 	    key: 'onNewTitleBlur',
 	    value: function onNewTitleBlur() {
-	      this.props.signals.app.list.newTitleAborted({
+	      this.props.signals.newTitleAborted({
 	        ref: this.props.todo.$ref
 	      });
 	    }
@@ -29135,7 +28160,7 @@
 	}(_react2.default.Component));
 
 /***/ },
-/* 264 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -29189,7 +28214,7 @@
 
 
 /***/ },
-/* 265 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29200,22 +28225,23 @@
 	
 	var _cerebral = __webpack_require__(181);
 	
-	var _visibleTodos = __webpack_require__(266);
+	var _visibleTodosKeys = __webpack_require__(230);
 	
-	var _visibleTodos2 = _interopRequireDefault(_visibleTodos);
+	var _visibleTodosKeys2 = _interopRequireDefault(_visibleTodosKeys);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _cerebral.Computed)({
-	  todos: (0, _visibleTodos2.default)()
+	  visibleTodosKeys: (0, _visibleTodosKeys2.default)(),
+	  todos: 'app.list.todos'
 	}, function (state) {
-	  return state.todos.filter(function (todo) {
-	    return !todo.completed;
-	  }).length === 0 && state.todos.length !== 0;
+	  return state.visibleTodosKeys.filter(function (key) {
+	    return !state.todos[key].completed;
+	  }).length === 0 && state.visibleTodosKeys.length !== 0;
 	});
 
 /***/ },
-/* 266 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29237,7 +28263,7 @@
 	});
 
 /***/ },
-/* 267 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29250,13 +28276,13 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
-	var _counts = __webpack_require__(268);
+	var _counts = __webpack_require__(232);
 	
 	var _counts2 = _interopRequireDefault(_counts);
 	
-	var _classnames = __webpack_require__(264);
+	var _classnames = __webpack_require__(228);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
@@ -29278,10 +28304,12 @@
 	exports.default = (0, _cerebralViewReact.connect)({
 	  filter: 'app.footer.filter',
 	  counts: (0, _counts2.default)()
+	}, {
+	  clearCompletedClicked: 'app.footer.clearCompletedClicked'
 	}, function Footer(_ref2) {
 	  var filter = _ref2.filter;
 	  var counts = _ref2.counts;
-	  var signals = _ref2.signals;
+	  var clearCompletedClicked = _ref2.clearCompletedClicked;
 	
 	  return _react2.default.createElement(
 	    'footer',
@@ -29329,13 +28357,13 @@
 	      )
 	    ),
 	    counts.completedCount ? _react2.default.createElement(CompletedButton, { completedCount: counts.completedCount, onClick: function onClick() {
-	        return signals.app.footer.clearCompletedClicked();
+	        return clearCompletedClicked();
 	      } }) : null
 	  );
 	});
 
 /***/ },
-/* 268 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29374,7 +28402,7 @@
 	});
 
 /***/ },
-/* 269 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29387,15 +28415,25 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _cerebralViewReact = __webpack_require__(254);
+	var _cerebralViewReact = __webpack_require__(219);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _cerebralViewReact.connect)({
 	  recorder: 'recorder'
+	}, {
+	  paused: 'recorder.paused',
+	  resumed: 'recorder.resumed',
+	  stopped: 'recorder.stopped',
+	  played: 'recorder.played',
+	  recorded: 'recorder.recorded'
 	}, function (_ref) {
 	  var recorder = _ref.recorder;
-	  var signals = _ref.signals;
+	  var paused = _ref.paused;
+	  var resumed = _ref.resumed;
+	  var stopped = _ref.stopped;
+	  var played = _ref.played;
+	  var recorded = _ref.recorded;
 	
 	  var style = {
 	    border: '1px solid black',
@@ -29410,7 +28448,7 @@
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
-	        signals.recorder.paused({}, {
+	        paused({}, {
 	          isRecorded: true
 	        });
 	      }
@@ -29420,7 +28458,7 @@
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
-	        signals.recorder.resumed();
+	        resumed();
 	      }
 	    }, 'Play');
 	  }
@@ -29428,7 +28466,7 @@
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
-	        signals.recorder.stopped();
+	        stopped();
 	      }
 	    }, 'Stop recording');
 	  }
@@ -29436,20 +28474,20 @@
 	    return _react2.default.createElement('button', {
 	      style: style,
 	      onClick: function onClick() {
-	        signals.recorder.played();
+	        played();
 	      }
 	    }, 'Play');
 	  }
 	  return _react2.default.createElement('button', {
 	    style: style,
 	    onClick: function onClick() {
-	      signals.recorder.recorded();
+	      recorded();
 	    }
 	  }, 'Record');
 	});
 
 /***/ },
-/* 270 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29458,15 +28496,15 @@
 	  value: true
 	});
 	
-	var _new = __webpack_require__(271);
+	var _new = __webpack_require__(235);
 	
 	var _new2 = _interopRequireDefault(_new);
 	
-	var _list = __webpack_require__(297);
+	var _list = __webpack_require__(309);
 	
 	var _list2 = _interopRequireDefault(_list);
 	
-	var _footer = __webpack_require__(312);
+	var _footer = __webpack_require__(324);
 	
 	var _footer2 = _interopRequireDefault(_footer);
 	
@@ -29485,7 +28523,7 @@
 	};
 
 /***/ },
-/* 271 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29494,11 +28532,11 @@
 	  value: true
 	});
 	
-	var _submitTodo = __webpack_require__(272);
+	var _submitTodo = __webpack_require__(236);
 	
 	var _submitTodo2 = _interopRequireDefault(_submitTodo);
 	
-	var _setTitle = __webpack_require__(292);
+	var _setTitle = __webpack_require__(304);
 	
 	var _setTitle2 = _interopRequireDefault(_setTitle);
 	
@@ -29523,7 +28561,7 @@
 	};
 
 /***/ },
-/* 272 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29532,27 +28570,27 @@
 	  value: true
 	});
 	
-	var _set = __webpack_require__(273);
+	var _set = __webpack_require__(237);
 	
 	var _set2 = _interopRequireDefault(_set);
 	
-	var _getNextRef = __webpack_require__(287);
+	var _getNextRef = __webpack_require__(299);
 	
 	var _getNextRef2 = _interopRequireDefault(_getNextRef);
 	
-	var _createTodoRecord = __webpack_require__(288);
+	var _createTodoRecord = __webpack_require__(300);
 	
 	var _createTodoRecord2 = _interopRequireDefault(_createTodoRecord);
 	
-	var _postTodo = __webpack_require__(289);
+	var _postTodo = __webpack_require__(301);
 	
 	var _postTodo2 = _interopRequireDefault(_postTodo);
 	
-	var _updateTodo = __webpack_require__(290);
+	var _updateTodo = __webpack_require__(302);
 	
 	var _updateTodo2 = _interopRequireDefault(_updateTodo);
 	
-	var _markTodoFailed = __webpack_require__(291);
+	var _markTodoFailed = __webpack_require__(303);
 	
 	var _markTodoFailed2 = _interopRequireDefault(_markTodoFailed);
 	
@@ -29564,14 +28602,14 @@
 	}];
 
 /***/ },
-/* 273 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(274).default
+	module.exports = __webpack_require__(238).default
 
 
 /***/ },
-/* 274 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29595,25 +28633,25 @@
 	  return set;
 	};
 	
-	var _set = __webpack_require__(275);
+	var _set = __webpack_require__(239);
 	
 	var _set2 = _interopRequireDefault(_set);
 	
-	var _toDisplayName = __webpack_require__(286);
+	var _toDisplayName = __webpack_require__(298);
 	
 	var _toDisplayName2 = _interopRequireDefault(_toDisplayName);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 275 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(276).default
+	module.exports = __webpack_require__(240).default
 
 
 /***/ },
-/* 276 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29623,7 +28661,7 @@
 	});
 	exports.default = compile;
 	
-	var _compiler = __webpack_require__(277);
+	var _compiler = __webpack_require__(241);
 	
 	var _compiler2 = _interopRequireDefault(_compiler);
 	
@@ -29636,7 +28674,7 @@
 	}
 
 /***/ },
-/* 277 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29646,19 +28684,19 @@
 	});
 	exports.default = compile;
 	
-	var _input = __webpack_require__(278);
+	var _input = __webpack_require__(242);
 	
 	var _input2 = _interopRequireDefault(_input);
 	
-	var _output = __webpack_require__(279);
+	var _output = __webpack_require__(291);
 	
 	var _output2 = _interopRequireDefault(_output);
 	
-	var _state = __webpack_require__(284);
+	var _state = __webpack_require__(296);
 	
 	var _state2 = _interopRequireDefault(_state);
 	
-	var _parseUrl = __webpack_require__(285);
+	var _parseUrl = __webpack_require__(297);
 	
 	var _parseUrl2 = _interopRequireDefault(_parseUrl);
 	
@@ -29707,7 +28745,7 @@
 	}
 
 /***/ },
-/* 278 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29716,7 +28754,7 @@
 	  value: true
 	});
 	
-	var _get = __webpack_require__(182);
+	var _get = __webpack_require__(243);
 	
 	var _get2 = _interopRequireDefault(_get);
 	
@@ -29732,7 +28770,1421 @@
 	};
 
 /***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseGet = __webpack_require__(244);
+	
+	/**
+	 * Gets the value at `path` of `object`. If the resolved value is
+	 * `undefined`, the `defaultValue` is used in its place.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.7.0
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to get.
+	 * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+	 * @returns {*} Returns the resolved value.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+	 *
+	 * _.get(object, 'a[0].b.c');
+	 * // => 3
+	 *
+	 * _.get(object, ['a', '0', 'b', 'c']);
+	 * // => 3
+	 *
+	 * _.get(object, 'a.b.c', 'default');
+	 * // => 'default'
+	 */
+	function get(object, path, defaultValue) {
+	  var result = object == null ? undefined : baseGet(object, path);
+	  return result === undefined ? defaultValue : result;
+	}
+	
+	module.exports = get;
+
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var castPath = __webpack_require__(245),
+	    isKey = __webpack_require__(289),
+	    toKey = __webpack_require__(290);
+	
+	/**
+	 * The base implementation of `_.get` without support for default values.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {*} Returns the resolved value.
+	 */
+	function baseGet(object, path) {
+	  path = isKey(path, object) ? [path] : castPath(path);
+	
+	  var index = 0,
+	      length = path.length;
+	
+	  while (object != null && index < length) {
+	    object = object[toKey(path[index++])];
+	  }
+	  return (index && index == length) ? object : undefined;
+	}
+	
+	module.exports = baseGet;
+
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(246),
+	    stringToPath = __webpack_require__(247);
+	
+	/**
+	 * Casts `value` to a path array if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {Array} Returns the cast property path array.
+	 */
+	function castPath(value) {
+	  return isArray(value) ? value : stringToPath(value);
+	}
+	
+	module.exports = castPath;
+
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @type {Function}
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+	
+	module.exports = isArray;
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var memoize = __webpack_require__(248),
+	    toString = __webpack_require__(284);
+	
+	/** Used to match property names within property paths. */
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
+	
+	/** Used to match backslashes in property paths. */
+	var reEscapeChar = /\\(\\)?/g;
+	
+	/**
+	 * Converts `string` to a property path array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the property path array.
+	 */
+	var stringToPath = memoize(function(string) {
+	  var result = [];
+	  toString(string).replace(rePropName, function(match, number, quote, string) {
+	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+	  });
+	  return result;
+	});
+	
+	module.exports = stringToPath;
+
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var MapCache = __webpack_require__(249);
+	
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+	
+	/**
+	 * Creates a function that memoizes the result of `func`. If `resolver` is
+	 * provided, it determines the cache key for storing the result based on the
+	 * arguments provided to the memoized function. By default, the first argument
+	 * provided to the memoized function is used as the map cache key. The `func`
+	 * is invoked with the `this` binding of the memoized function.
+	 *
+	 * **Note:** The cache is exposed as the `cache` property on the memoized
+	 * function. Its creation may be customized by replacing the `_.memoize.Cache`
+	 * constructor with one whose instances implement the
+	 * [`Map`](http://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-map-prototype-object)
+	 * method interface of `delete`, `get`, `has`, and `set`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Function
+	 * @param {Function} func The function to have its output memoized.
+	 * @param {Function} [resolver] The function to resolve the cache key.
+	 * @returns {Function} Returns the new memoized function.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': 2 };
+	 * var other = { 'c': 3, 'd': 4 };
+	 *
+	 * var values = _.memoize(_.values);
+	 * values(object);
+	 * // => [1, 2]
+	 *
+	 * values(other);
+	 * // => [3, 4]
+	 *
+	 * object.a = 2;
+	 * values(object);
+	 * // => [1, 2]
+	 *
+	 * // Modify the result cache.
+	 * values.cache.set(object, ['a', 'b']);
+	 * values(object);
+	 * // => ['a', 'b']
+	 *
+	 * // Replace `_.memoize.Cache`.
+	 * _.memoize.Cache = WeakMap;
+	 */
+	function memoize(func, resolver) {
+	  if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  var memoized = function() {
+	    var args = arguments,
+	        key = resolver ? resolver.apply(this, args) : args[0],
+	        cache = memoized.cache;
+	
+	    if (cache.has(key)) {
+	      return cache.get(key);
+	    }
+	    var result = func.apply(this, args);
+	    memoized.cache = cache.set(key, result);
+	    return result;
+	  };
+	  memoized.cache = new (memoize.Cache || MapCache);
+	  return memoized;
+	}
+	
+	// Assign cache to `_.memoize`.
+	memoize.Cache = MapCache;
+	
+	module.exports = memoize;
+
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mapCacheClear = __webpack_require__(250),
+	    mapCacheDelete = __webpack_require__(278),
+	    mapCacheGet = __webpack_require__(281),
+	    mapCacheHas = __webpack_require__(282),
+	    mapCacheSet = __webpack_require__(283);
+	
+	/**
+	 * Creates a map cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function MapCache(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `MapCache`.
+	MapCache.prototype.clear = mapCacheClear;
+	MapCache.prototype['delete'] = mapCacheDelete;
+	MapCache.prototype.get = mapCacheGet;
+	MapCache.prototype.has = mapCacheHas;
+	MapCache.prototype.set = mapCacheSet;
+	
+	module.exports = MapCache;
+
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Hash = __webpack_require__(251),
+	    ListCache = __webpack_require__(269),
+	    Map = __webpack_require__(277);
+	
+	/**
+	 * Removes all key-value entries from the map.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf MapCache
+	 */
+	function mapCacheClear() {
+	  this.__data__ = {
+	    'hash': new Hash,
+	    'map': new (Map || ListCache),
+	    'string': new Hash
+	  };
+	}
+	
+	module.exports = mapCacheClear;
+
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var hashClear = __webpack_require__(252),
+	    hashDelete = __webpack_require__(265),
+	    hashGet = __webpack_require__(266),
+	    hashHas = __webpack_require__(267),
+	    hashSet = __webpack_require__(268);
+	
+	/**
+	 * Creates a hash object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function Hash(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `Hash`.
+	Hash.prototype.clear = hashClear;
+	Hash.prototype['delete'] = hashDelete;
+	Hash.prototype.get = hashGet;
+	Hash.prototype.has = hashHas;
+	Hash.prototype.set = hashSet;
+	
+	module.exports = Hash;
+
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(253);
+	
+	/**
+	 * Removes all key-value entries from the hash.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Hash
+	 */
+	function hashClear() {
+	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+	}
+	
+	module.exports = hashClear;
+
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(254);
+	
+	/* Built-in method references that are verified to be native. */
+	var nativeCreate = getNative(Object, 'create');
+	
+	module.exports = nativeCreate;
+
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsNative = __webpack_require__(255),
+	    getValue = __webpack_require__(264);
+	
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = getValue(object, key);
+	  return baseIsNative(value) ? value : undefined;
+	}
+	
+	module.exports = getNative;
+
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isFunction = __webpack_require__(256),
+	    isHostObject = __webpack_require__(258),
+	    isMasked = __webpack_require__(259),
+	    isObject = __webpack_require__(257),
+	    toSource = __webpack_require__(263);
+	
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+	 */
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+	
+	/** Used to detect host constructors (Safari). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+	
+	/**
+	 * The base implementation of `_.isNative` without bad shim checks.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
+	 */
+	function baseIsNative(value) {
+	  if (!isObject(value) || isMasked(value)) {
+	    return false;
+	  }
+	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
+	}
+	
+	module.exports = baseIsNative;
+
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(257);
+	
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+	
+	module.exports = isFunction;
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	module.exports = isObject;
+
+
+/***/ },
+/* 258 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+	
+	module.exports = isHostObject;
+
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var coreJsData = __webpack_require__(260);
+	
+	/** Used to detect methods masquerading as native. */
+	var maskSrcKey = (function() {
+	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+	  return uid ? ('Symbol(src)_1.' + uid) : '';
+	}());
+	
+	/**
+	 * Checks if `func` has its source masked.
+	 *
+	 * @private
+	 * @param {Function} func The function to check.
+	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+	 */
+	function isMasked(func) {
+	  return !!maskSrcKey && (maskSrcKey in func);
+	}
+	
+	module.exports = isMasked;
+
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(261);
+	
+	/** Used to detect overreaching core-js shims. */
+	var coreJsData = root['__core-js_shared__'];
+	
+	module.exports = coreJsData;
+
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {var checkGlobal = __webpack_require__(262);
+	
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = checkGlobal(typeof global == 'object' && global);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = checkGlobal(typeof self == 'object' && self);
+	
+	/** Detect `this` as the global object. */
+	var thisGlobal = checkGlobal(typeof this == 'object' && this);
+	
+	/** Used as a reference to the global object. */
+	var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
+	
+	module.exports = root;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 262 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a global object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+	 */
+	function checkGlobal(value) {
+	  return (value && value.Object === Object) ? value : null;
+	}
+	
+	module.exports = checkGlobal;
+
+
+/***/ },
+/* 263 */
+/***/ function(module, exports) {
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+	
+	/**
+	 * Converts `func` to its source code.
+	 *
+	 * @private
+	 * @param {Function} func The function to process.
+	 * @returns {string} Returns the source code.
+	 */
+	function toSource(func) {
+	  if (func != null) {
+	    try {
+	      return funcToString.call(func);
+	    } catch (e) {}
+	    try {
+	      return (func + '');
+	    } catch (e) {}
+	  }
+	  return '';
+	}
+	
+	module.exports = toSource;
+
+
+/***/ },
+/* 264 */
+/***/ function(module, exports) {
+
+	/**
+	 * Gets the value at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} [object] The object to query.
+	 * @param {string} key The key of the property to get.
+	 * @returns {*} Returns the property value.
+	 */
+	function getValue(object, key) {
+	  return object == null ? undefined : object[key];
+	}
+	
+	module.exports = getValue;
+
+
+/***/ },
+/* 265 */
+/***/ function(module, exports) {
+
+	/**
+	 * Removes `key` and its value from the hash.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Hash
+	 * @param {Object} hash The hash to modify.
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function hashDelete(key) {
+	  return this.has(key) && delete this.__data__[key];
+	}
+	
+	module.exports = hashDelete;
+
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(253);
+	
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Gets the hash value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function hashGet(key) {
+	  var data = this.__data__;
+	  if (nativeCreate) {
+	    var result = data[key];
+	    return result === HASH_UNDEFINED ? undefined : result;
+	  }
+	  return hasOwnProperty.call(data, key) ? data[key] : undefined;
+	}
+	
+	module.exports = hashGet;
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(253);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Checks if a hash value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Hash
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function hashHas(key) {
+	  var data = this.__data__;
+	  return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+	}
+	
+	module.exports = hashHas;
+
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(253);
+	
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	
+	/**
+	 * Sets the hash `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the hash instance.
+	 */
+	function hashSet(key, value) {
+	  var data = this.__data__;
+	  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+	  return this;
+	}
+	
+	module.exports = hashSet;
+
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var listCacheClear = __webpack_require__(270),
+	    listCacheDelete = __webpack_require__(271),
+	    listCacheGet = __webpack_require__(274),
+	    listCacheHas = __webpack_require__(275),
+	    listCacheSet = __webpack_require__(276);
+	
+	/**
+	 * Creates an list cache object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function ListCache(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `ListCache`.
+	ListCache.prototype.clear = listCacheClear;
+	ListCache.prototype['delete'] = listCacheDelete;
+	ListCache.prototype.get = listCacheGet;
+	ListCache.prototype.has = listCacheHas;
+	ListCache.prototype.set = listCacheSet;
+	
+	module.exports = ListCache;
+
+
+/***/ },
+/* 270 */
+/***/ function(module, exports) {
+
+	/**
+	 * Removes all key-value entries from the list cache.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf ListCache
+	 */
+	function listCacheClear() {
+	  this.__data__ = [];
+	}
+	
+	module.exports = listCacheClear;
+
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(272);
+	
+	/** Used for built-in method references. */
+	var arrayProto = Array.prototype;
+	
+	/** Built-in value references. */
+	var splice = arrayProto.splice;
+	
+	/**
+	 * Removes `key` and its value from the list cache.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function listCacheDelete(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	
+	  if (index < 0) {
+	    return false;
+	  }
+	  var lastIndex = data.length - 1;
+	  if (index == lastIndex) {
+	    data.pop();
+	  } else {
+	    splice.call(data, index, 1);
+	  }
+	  return true;
+	}
+	
+	module.exports = listCacheDelete;
+
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var eq = __webpack_require__(273);
+	
+	/**
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
+	 *
+	 * @private
+	 * @param {Array} array The array to search.
+	 * @param {*} key The key to search for.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function assocIndexOf(array, key) {
+	  var length = array.length;
+	  while (length--) {
+	    if (eq(array[length][0], key)) {
+	      return length;
+	    }
+	  }
+	  return -1;
+	}
+	
+	module.exports = assocIndexOf;
+
+
+/***/ },
+/* 273 */
+/***/ function(module, exports) {
+
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 * var other = { 'user': 'fred' };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
+	}
+	
+	module.exports = eq;
+
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(272);
+	
+	/**
+	 * Gets the list cache value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function listCacheGet(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	
+	  return index < 0 ? undefined : data[index][1];
+	}
+	
+	module.exports = listCacheGet;
+
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(272);
+	
+	/**
+	 * Checks if a list cache value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf ListCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function listCacheHas(key) {
+	  return assocIndexOf(this.__data__, key) > -1;
+	}
+	
+	module.exports = listCacheHas;
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(272);
+	
+	/**
+	 * Sets the list cache `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the list cache instance.
+	 */
+	function listCacheSet(key, value) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	
+	  if (index < 0) {
+	    data.push([key, value]);
+	  } else {
+	    data[index][1] = value;
+	  }
+	  return this;
+	}
+	
+	module.exports = listCacheSet;
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(254),
+	    root = __webpack_require__(261);
+	
+	/* Built-in method references that are verified to be native. */
+	var Map = getNative(root, 'Map');
+	
+	module.exports = Map;
+
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(279);
+	
+	/**
+	 * Removes `key` and its value from the map.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function mapCacheDelete(key) {
+	  return getMapData(this, key)['delete'](key);
+	}
+	
+	module.exports = mapCacheDelete;
+
+
+/***/ },
 /* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isKeyable = __webpack_require__(280);
+	
+	/**
+	 * Gets the data for `map`.
+	 *
+	 * @private
+	 * @param {Object} map The map to query.
+	 * @param {string} key The reference key.
+	 * @returns {*} Returns the map data.
+	 */
+	function getMapData(map, key) {
+	  var data = map.__data__;
+	  return isKeyable(key)
+	    ? data[typeof key == 'string' ? 'string' : 'hash']
+	    : data.map;
+	}
+	
+	module.exports = getMapData;
+
+
+/***/ },
+/* 280 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is suitable for use as unique object key.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+	 */
+	function isKeyable(value) {
+	  var type = typeof value;
+	  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+	    ? (value !== '__proto__')
+	    : (value === null);
+	}
+	
+	module.exports = isKeyable;
+
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(279);
+	
+	/**
+	 * Gets the map value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function mapCacheGet(key) {
+	  return getMapData(this, key).get(key);
+	}
+	
+	module.exports = mapCacheGet;
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(279);
+	
+	/**
+	 * Checks if a map value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf MapCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function mapCacheHas(key) {
+	  return getMapData(this, key).has(key);
+	}
+	
+	module.exports = mapCacheHas;
+
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(279);
+	
+	/**
+	 * Sets the map `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the map cache instance.
+	 */
+	function mapCacheSet(key, value) {
+	  getMapData(this, key).set(key, value);
+	  return this;
+	}
+	
+	module.exports = mapCacheSet;
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseToString = __webpack_require__(285);
+	
+	/**
+	 * Converts `value` to a string. An empty string is returned for `null`
+	 * and `undefined` values. The sign of `-0` is preserved.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 * @example
+	 *
+	 * _.toString(null);
+	 * // => ''
+	 *
+	 * _.toString(-0);
+	 * // => '-0'
+	 *
+	 * _.toString([1, 2, 3]);
+	 * // => '1,2,3'
+	 */
+	function toString(value) {
+	  return value == null ? '' : baseToString(value);
+	}
+	
+	module.exports = toString;
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(286),
+	    isSymbol = __webpack_require__(287);
+	
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+	
+	/** Used to convert symbols to primitives and strings. */
+	var symbolProto = Symbol ? Symbol.prototype : undefined,
+	    symbolToString = symbolProto ? symbolProto.toString : undefined;
+	
+	/**
+	 * The base implementation of `_.toString` which doesn't convert nullish
+	 * values to empty strings.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  // Exit early for strings to avoid a performance hit in some environments.
+	  if (typeof value == 'string') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return symbolToString ? symbolToString.call(value) : '';
+	  }
+	  var result = (value + '');
+	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+	}
+	
+	module.exports = baseToString;
+
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(261);
+	
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+	
+	module.exports = Symbol;
+
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObjectLike = __webpack_require__(288);
+	
+	/** `Object#toString` result references. */
+	var symbolTag = '[object Symbol]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+	
+	module.exports = isSymbol;
+
+
+/***/ },
+/* 288 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(246),
+	    isSymbol = __webpack_require__(287);
+	
+	/** Used to match property names within property paths. */
+	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+	    reIsPlainProp = /^\w*$/;
+	
+	/**
+	 * Checks if `value` is a property name and not a property path.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	 */
+	function isKey(value, object) {
+	  if (isArray(value)) {
+	    return false;
+	  }
+	  var type = typeof value;
+	  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+	      value == null || isSymbol(value)) {
+	    return true;
+	  }
+	  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+	    (object != null && value in Object(object));
+	}
+	
+	module.exports = isKey;
+
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isSymbol = __webpack_require__(287);
+	
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+	
+	/**
+	 * Converts `value` to a string key if it's not a string or symbol.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {string|symbol} Returns the key.
+	 */
+	function toKey(value) {
+	  if (typeof value == 'string' || isSymbol(value)) {
+	    return value;
+	  }
+	  var result = (value + '');
+	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+	}
+	
+	module.exports = toKey;
+
+
+/***/ },
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29741,7 +30193,7 @@
 	  value: true
 	});
 	
-	var _set = __webpack_require__(280);
+	var _set = __webpack_require__(292);
 	
 	var _set2 = _interopRequireDefault(_set);
 	
@@ -29761,10 +30213,10 @@
 	};
 
 /***/ },
-/* 280 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseSet = __webpack_require__(281);
+	var baseSet = __webpack_require__(293);
 	
 	/**
 	 * Sets the value at `path` of `object`. If a portion of `path` doesn't exist,
@@ -29802,15 +30254,15 @@
 
 
 /***/ },
-/* 281 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(282),
-	    castPath = __webpack_require__(184),
-	    isIndex = __webpack_require__(283),
-	    isKey = __webpack_require__(228),
-	    isObject = __webpack_require__(196),
-	    toKey = __webpack_require__(229);
+	var assignValue = __webpack_require__(294),
+	    castPath = __webpack_require__(245),
+	    isIndex = __webpack_require__(295),
+	    isKey = __webpack_require__(289),
+	    isObject = __webpack_require__(257),
+	    toKey = __webpack_require__(290);
 	
 	/**
 	 * The base implementation of `_.set`.
@@ -29854,10 +30306,10 @@
 
 
 /***/ },
-/* 282 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(212);
+	var eq = __webpack_require__(273);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -29887,7 +30339,7 @@
 
 
 /***/ },
-/* 283 */
+/* 295 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -29915,7 +30367,7 @@
 
 
 /***/ },
-/* 284 */
+/* 296 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -29944,7 +30396,7 @@
 	};
 
 /***/ },
-/* 285 */
+/* 297 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -29964,7 +30416,7 @@
 	}
 
 /***/ },
-/* 286 */
+/* 298 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29978,7 +30430,7 @@
 	};
 
 /***/ },
-/* 287 */
+/* 299 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -29996,7 +30448,7 @@
 	exports.default = getNextRef;
 
 /***/ },
-/* 288 */
+/* 300 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30021,7 +30473,7 @@
 	exports.default = createTodoRecord;
 
 /***/ },
-/* 289 */
+/* 301 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30052,7 +30504,7 @@
 	exports.default = postTodo;
 
 /***/ },
-/* 290 */
+/* 302 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30073,7 +30525,7 @@
 	exports.default = updateTodo;
 
 /***/ },
-/* 291 */
+/* 303 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30094,7 +30546,7 @@
 	exports.default = markTodoFailed;
 
 /***/ },
-/* 292 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30103,7 +30555,7 @@
 	  value: true
 	});
 	
-	var _copy = __webpack_require__(293);
+	var _copy = __webpack_require__(305);
 	
 	var _copy2 = _interopRequireDefault(_copy);
 	
@@ -30112,14 +30564,14 @@
 	exports.default = [(0, _copy2.default)('input:title', 'state:app.new.title')];
 
 /***/ },
-/* 293 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(294).default
+	module.exports = __webpack_require__(306).default
 
 
 /***/ },
-/* 294 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30174,29 +30626,29 @@
 	  return copy;
 	};
 	
-	var _get = __webpack_require__(295);
+	var _get = __webpack_require__(307);
 	
 	var _get2 = _interopRequireDefault(_get);
 	
-	var _set = __webpack_require__(275);
+	var _set = __webpack_require__(239);
 	
 	var _set2 = _interopRequireDefault(_set);
 	
-	var _toDisplayName = __webpack_require__(286);
+	var _toDisplayName = __webpack_require__(298);
 	
 	var _toDisplayName2 = _interopRequireDefault(_toDisplayName);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 295 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(296).default
+	module.exports = __webpack_require__(308).default
 
 
 /***/ },
-/* 296 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30206,7 +30658,7 @@
 	});
 	exports.default = compile;
 	
-	var _compiler = __webpack_require__(277);
+	var _compiler = __webpack_require__(241);
 	
 	var _compiler2 = _interopRequireDefault(_compiler);
 	
@@ -30219,7 +30671,7 @@
 	}
 
 /***/ },
-/* 297 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30228,31 +30680,31 @@
 	  value: true
 	});
 	
-	var _setTodoNewTitle = __webpack_require__(298);
+	var _setTodoNewTitle = __webpack_require__(310);
 	
 	var _setTodoNewTitle2 = _interopRequireDefault(_setTodoNewTitle);
 	
-	var _overwriteTodoTitle = __webpack_require__(300);
+	var _overwriteTodoTitle = __webpack_require__(312);
 	
 	var _overwriteTodoTitle2 = _interopRequireDefault(_overwriteTodoTitle);
 	
-	var _removeTodo = __webpack_require__(304);
+	var _removeTodo = __webpack_require__(316);
 	
 	var _removeTodo2 = _interopRequireDefault(_removeTodo);
 	
-	var _editTodo = __webpack_require__(306);
+	var _editTodo = __webpack_require__(318);
 	
 	var _editTodo2 = _interopRequireDefault(_editTodo);
 	
-	var _toggleAllChecked = __webpack_require__(308);
+	var _toggleAllChecked = __webpack_require__(320);
 	
 	var _toggleAllChecked2 = _interopRequireDefault(_toggleAllChecked);
 	
-	var _toggleTodoCompleted = __webpack_require__(310);
+	var _toggleTodoCompleted = __webpack_require__(322);
 	
 	var _toggleTodoCompleted2 = _interopRequireDefault(_toggleTodoCompleted);
 	
-	var _stopEditingTodo = __webpack_require__(302);
+	var _stopEditingTodo = __webpack_require__(314);
 	
 	var _stopEditingTodo2 = _interopRequireDefault(_stopEditingTodo);
 	
@@ -30286,7 +30738,7 @@
 	};
 
 /***/ },
-/* 298 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30295,7 +30747,7 @@
 	  value: true
 	});
 	
-	var _setTodoNewTitle = __webpack_require__(299);
+	var _setTodoNewTitle = __webpack_require__(311);
 	
 	var _setTodoNewTitle2 = _interopRequireDefault(_setTodoNewTitle);
 	
@@ -30304,7 +30756,7 @@
 	exports.default = [_setTodoNewTitle2.default];
 
 /***/ },
-/* 299 */
+/* 311 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30322,7 +30774,7 @@
 	exports.default = setTodoNewTitle;
 
 /***/ },
-/* 300 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30331,11 +30783,11 @@
 	  value: true
 	});
 	
-	var _overwriteTodoTitle = __webpack_require__(301);
+	var _overwriteTodoTitle = __webpack_require__(313);
 	
 	var _overwriteTodoTitle2 = _interopRequireDefault(_overwriteTodoTitle);
 	
-	var _stopEditingTodo = __webpack_require__(302);
+	var _stopEditingTodo = __webpack_require__(314);
 	
 	var _stopEditingTodo2 = _interopRequireDefault(_stopEditingTodo);
 
@@ -30346,7 +30798,7 @@
 	exports.default = [_overwriteTodoTitle2.default].concat(_toConsumableArray(_stopEditingTodo2.default));
 
 /***/ },
-/* 301 */
+/* 313 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30365,7 +30817,7 @@
 	exports.default = overwriteTodoTitle;
 
 /***/ },
-/* 302 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30374,7 +30826,7 @@
 	  value: true
 	});
 	
-	var _stopEditingTodo = __webpack_require__(303);
+	var _stopEditingTodo = __webpack_require__(315);
 	
 	var _stopEditingTodo2 = _interopRequireDefault(_stopEditingTodo);
 	
@@ -30383,7 +30835,7 @@
 	exports.default = [_stopEditingTodo2.default];
 
 /***/ },
-/* 303 */
+/* 315 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30402,7 +30854,7 @@
 	exports.default = stopEditingTodo;
 
 /***/ },
-/* 304 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30411,7 +30863,7 @@
 	  value: true
 	});
 	
-	var _removeTodo = __webpack_require__(305);
+	var _removeTodo = __webpack_require__(317);
 	
 	var _removeTodo2 = _interopRequireDefault(_removeTodo);
 	
@@ -30420,7 +30872,7 @@
 	exports.default = [_removeTodo2.default];
 
 /***/ },
-/* 305 */
+/* 317 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30438,7 +30890,7 @@
 	exports.default = removeTodo;
 
 /***/ },
-/* 306 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30447,7 +30899,7 @@
 	  value: true
 	});
 	
-	var _editTodo = __webpack_require__(307);
+	var _editTodo = __webpack_require__(319);
 	
 	var _editTodo2 = _interopRequireDefault(_editTodo);
 	
@@ -30456,7 +30908,7 @@
 	exports.default = [_editTodo2.default];
 
 /***/ },
-/* 307 */
+/* 319 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30474,7 +30926,7 @@
 	exports.default = editTodo;
 
 /***/ },
-/* 308 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30483,7 +30935,7 @@
 	  value: true
 	});
 	
-	var _toggleAllChecked = __webpack_require__(309);
+	var _toggleAllChecked = __webpack_require__(321);
 	
 	var _toggleAllChecked2 = _interopRequireDefault(_toggleAllChecked);
 	
@@ -30492,7 +30944,7 @@
 	exports.default = [_toggleAllChecked2.default];
 
 /***/ },
-/* 309 */
+/* 321 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30517,7 +30969,7 @@
 	exports.default = toggleAllChecked;
 
 /***/ },
-/* 310 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30526,7 +30978,7 @@
 	  value: true
 	});
 	
-	var _toggleTodoCompleted = __webpack_require__(311);
+	var _toggleTodoCompleted = __webpack_require__(323);
 	
 	var _toggleTodoCompleted2 = _interopRequireDefault(_toggleTodoCompleted);
 	
@@ -30535,7 +30987,7 @@
 	exports.default = [_toggleTodoCompleted2.default];
 
 /***/ },
-/* 311 */
+/* 323 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30554,7 +31006,7 @@
 	exports.default = toggleTodoCompleted;
 
 /***/ },
-/* 312 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30563,11 +31015,11 @@
 	  value: true
 	});
 	
-	var _clearCompletedTodos = __webpack_require__(313);
+	var _clearCompletedTodos = __webpack_require__(325);
 	
 	var _clearCompletedTodos2 = _interopRequireDefault(_clearCompletedTodos);
 	
-	var _setFilter = __webpack_require__(315);
+	var _setFilter = __webpack_require__(327);
 	
 	var _setFilter2 = _interopRequireDefault(_setFilter);
 	
@@ -30589,7 +31041,7 @@
 	};
 
 /***/ },
-/* 313 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30598,7 +31050,7 @@
 	  value: true
 	});
 	
-	var _clearCompletedTodos = __webpack_require__(314);
+	var _clearCompletedTodos = __webpack_require__(326);
 	
 	var _clearCompletedTodos2 = _interopRequireDefault(_clearCompletedTodos);
 	
@@ -30607,7 +31059,7 @@
 	exports.default = [_clearCompletedTodos2.default];
 
 /***/ },
-/* 314 */
+/* 326 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30630,7 +31082,7 @@
 	exports.default = clearCompleted;
 
 /***/ },
-/* 315 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30639,15 +31091,15 @@
 	  value: true
 	});
 	
-	var _copy = __webpack_require__(293);
+	var _copy = __webpack_require__(305);
 	
 	var _copy2 = _interopRequireDefault(_copy);
 	
-	var _or = __webpack_require__(316);
+	var _or = __webpack_require__(328);
 	
 	var _or2 = _interopRequireDefault(_or);
 	
-	var _literal = __webpack_require__(320);
+	var _literal = __webpack_require__(391);
 	
 	var _literal2 = _interopRequireDefault(_literal);
 	
@@ -30656,14 +31108,14 @@
 	exports.default = [(0, _copy2.default)((0, _or2.default)('input:filter', (0, _literal2.default)('all')), 'state:app.footer.filter')];
 
 /***/ },
-/* 316 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(317).default
+	module.exports = __webpack_require__(329).default
 
 
 /***/ },
-/* 317 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30695,22 +31147,1794 @@
 	  return or;
 	};
 	
-	var _get = __webpack_require__(295);
+	var _get = __webpack_require__(330);
 	
 	var _get2 = _interopRequireDefault(_get);
 	
-	var _isTruthy = __webpack_require__(318);
+	var _isTruthy = __webpack_require__(389);
 	
 	var _isTruthy2 = _interopRequireDefault(_isTruthy);
 	
-	var _toDisplayName = __webpack_require__(319);
+	var _toDisplayName = __webpack_require__(390);
 	
 	var _toDisplayName2 = _interopRequireDefault(_toDisplayName);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 318 */
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(331).default
+
+
+/***/ },
+/* 331 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = compile;
+	
+	var _compiler = __webpack_require__(332);
+	
+	var _compiler2 = _interopRequireDefault(_compiler);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function compile(path) {
+	  var fn = arguments.length <= 1 || arguments[1] === undefined ? 'get' : arguments[1];
+	
+	  return (0, _compiler2.default)(path, fn, true);
+	}
+
+/***/ },
+/* 332 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = compile;
+	
+	var _input = __webpack_require__(333);
+	
+	var _input2 = _interopRequireDefault(_input);
+	
+	var _output = __webpack_require__(382);
+	
+	var _output2 = _interopRequireDefault(_output);
+	
+	var _state = __webpack_require__(387);
+	
+	var _state2 = _interopRequireDefault(_state);
+	
+	var _parseUrl = __webpack_require__(388);
+	
+	var _parseUrl2 = _interopRequireDefault(_parseUrl);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function compile(path, fn, isGetter) {
+	  if (typeof path === 'string') {
+	    // check if the string is a url
+	    var url = (0, _parseUrl2.default)(path);
+	    if (url) {
+	      if (url.scheme === 'input' && fn === 'get') {
+	        return (0, _input2.default)(url);
+	      } else if (url.scheme === 'output' && fn === 'set') {
+	        return (0, _output2.default)(url);
+	      } else if (url.scheme === 'state') {
+	        return (0, _state2.default)(url, fn, isGetter);
+	      } else {
+	        return console.error(path + ' : not supported by input, output or state.' + fn);
+	      }
+	    }
+	  } else if (typeof path === 'function') {
+	    // for functions simply return them
+	    return path;
+	  }
+	  // other values (probably an array or non-url string) are passed through to state.fn
+	  var stateFn = function state(_ref) {
+	    var state = _ref.state;
+	
+	    for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      values[_key - 1] = arguments[_key];
+	    }
+	
+	    if (isGetter) {
+	      return path ? state[fn].apply(state, [path].concat(values)) : state[fn].apply(state, values);
+	    } else {
+	      if (path) {
+	        state[fn].apply(state, [path].concat(values));
+	      } else {
+	        state[fn].apply(state, values);
+	      }
+	      return values.length === 1 ? values[0] : values;
+	    }
+	  };
+	  stateFn.displayName = 'state.' + fn;
+	  return stateFn;
+	}
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _get = __webpack_require__(334);
+	
+	var _get2 = _interopRequireDefault(_get);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (url) {
+	  // get the value from the input object
+	  return function input(_ref) {
+	    var input = _ref.input;
+	
+	    return (0, _get2.default)(input, url.path);
+	  };
+	};
+
+/***/ },
+/* 334 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseGet = __webpack_require__(335);
+	
+	/**
+	 * Gets the value at `path` of `object`. If the resolved value is
+	 * `undefined`, the `defaultValue` is used in its place.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.7.0
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to get.
+	 * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+	 * @returns {*} Returns the resolved value.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+	 *
+	 * _.get(object, 'a[0].b.c');
+	 * // => 3
+	 *
+	 * _.get(object, ['a', '0', 'b', 'c']);
+	 * // => 3
+	 *
+	 * _.get(object, 'a.b.c', 'default');
+	 * // => 'default'
+	 */
+	function get(object, path, defaultValue) {
+	  var result = object == null ? undefined : baseGet(object, path);
+	  return result === undefined ? defaultValue : result;
+	}
+	
+	module.exports = get;
+
+
+/***/ },
+/* 335 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var castPath = __webpack_require__(336),
+	    isKey = __webpack_require__(380),
+	    toKey = __webpack_require__(381);
+	
+	/**
+	 * The base implementation of `_.get` without support for default values.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to get.
+	 * @returns {*} Returns the resolved value.
+	 */
+	function baseGet(object, path) {
+	  path = isKey(path, object) ? [path] : castPath(path);
+	
+	  var index = 0,
+	      length = path.length;
+	
+	  while (object != null && index < length) {
+	    object = object[toKey(path[index++])];
+	  }
+	  return (index && index == length) ? object : undefined;
+	}
+	
+	module.exports = baseGet;
+
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(337),
+	    stringToPath = __webpack_require__(338);
+	
+	/**
+	 * Casts `value` to a path array if it's not one.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {Array} Returns the cast property path array.
+	 */
+	function castPath(value) {
+	  return isArray(value) ? value : stringToPath(value);
+	}
+	
+	module.exports = castPath;
+
+
+/***/ },
+/* 337 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @type {Function}
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+	
+	module.exports = isArray;
+
+
+/***/ },
+/* 338 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var memoize = __webpack_require__(339),
+	    toString = __webpack_require__(375);
+	
+	/** Used to match property names within property paths. */
+	var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
+	
+	/** Used to match backslashes in property paths. */
+	var reEscapeChar = /\\(\\)?/g;
+	
+	/**
+	 * Converts `string` to a property path array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the property path array.
+	 */
+	var stringToPath = memoize(function(string) {
+	  var result = [];
+	  toString(string).replace(rePropName, function(match, number, quote, string) {
+	    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+	  });
+	  return result;
+	});
+	
+	module.exports = stringToPath;
+
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var MapCache = __webpack_require__(340);
+	
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+	
+	/**
+	 * Creates a function that memoizes the result of `func`. If `resolver` is
+	 * provided, it determines the cache key for storing the result based on the
+	 * arguments provided to the memoized function. By default, the first argument
+	 * provided to the memoized function is used as the map cache key. The `func`
+	 * is invoked with the `this` binding of the memoized function.
+	 *
+	 * **Note:** The cache is exposed as the `cache` property on the memoized
+	 * function. Its creation may be customized by replacing the `_.memoize.Cache`
+	 * constructor with one whose instances implement the
+	 * [`Map`](http://ecma-international.org/ecma-262/6.0/#sec-properties-of-the-map-prototype-object)
+	 * method interface of `delete`, `get`, `has`, and `set`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Function
+	 * @param {Function} func The function to have its output memoized.
+	 * @param {Function} [resolver] The function to resolve the cache key.
+	 * @returns {Function} Returns the new memoized function.
+	 * @example
+	 *
+	 * var object = { 'a': 1, 'b': 2 };
+	 * var other = { 'c': 3, 'd': 4 };
+	 *
+	 * var values = _.memoize(_.values);
+	 * values(object);
+	 * // => [1, 2]
+	 *
+	 * values(other);
+	 * // => [3, 4]
+	 *
+	 * object.a = 2;
+	 * values(object);
+	 * // => [1, 2]
+	 *
+	 * // Modify the result cache.
+	 * values.cache.set(object, ['a', 'b']);
+	 * values(object);
+	 * // => ['a', 'b']
+	 *
+	 * // Replace `_.memoize.Cache`.
+	 * _.memoize.Cache = WeakMap;
+	 */
+	function memoize(func, resolver) {
+	  if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  var memoized = function() {
+	    var args = arguments,
+	        key = resolver ? resolver.apply(this, args) : args[0],
+	        cache = memoized.cache;
+	
+	    if (cache.has(key)) {
+	      return cache.get(key);
+	    }
+	    var result = func.apply(this, args);
+	    memoized.cache = cache.set(key, result);
+	    return result;
+	  };
+	  memoized.cache = new (memoize.Cache || MapCache);
+	  return memoized;
+	}
+	
+	// Assign cache to `_.memoize`.
+	memoize.Cache = MapCache;
+	
+	module.exports = memoize;
+
+
+/***/ },
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var mapCacheClear = __webpack_require__(341),
+	    mapCacheDelete = __webpack_require__(369),
+	    mapCacheGet = __webpack_require__(372),
+	    mapCacheHas = __webpack_require__(373),
+	    mapCacheSet = __webpack_require__(374);
+	
+	/**
+	 * Creates a map cache object to store key-value pairs.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function MapCache(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `MapCache`.
+	MapCache.prototype.clear = mapCacheClear;
+	MapCache.prototype['delete'] = mapCacheDelete;
+	MapCache.prototype.get = mapCacheGet;
+	MapCache.prototype.has = mapCacheHas;
+	MapCache.prototype.set = mapCacheSet;
+	
+	module.exports = MapCache;
+
+
+/***/ },
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Hash = __webpack_require__(342),
+	    ListCache = __webpack_require__(360),
+	    Map = __webpack_require__(368);
+	
+	/**
+	 * Removes all key-value entries from the map.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf MapCache
+	 */
+	function mapCacheClear() {
+	  this.__data__ = {
+	    'hash': new Hash,
+	    'map': new (Map || ListCache),
+	    'string': new Hash
+	  };
+	}
+	
+	module.exports = mapCacheClear;
+
+
+/***/ },
+/* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var hashClear = __webpack_require__(343),
+	    hashDelete = __webpack_require__(356),
+	    hashGet = __webpack_require__(357),
+	    hashHas = __webpack_require__(358),
+	    hashSet = __webpack_require__(359);
+	
+	/**
+	 * Creates a hash object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function Hash(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `Hash`.
+	Hash.prototype.clear = hashClear;
+	Hash.prototype['delete'] = hashDelete;
+	Hash.prototype.get = hashGet;
+	Hash.prototype.has = hashHas;
+	Hash.prototype.set = hashSet;
+	
+	module.exports = Hash;
+
+
+/***/ },
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(344);
+	
+	/**
+	 * Removes all key-value entries from the hash.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf Hash
+	 */
+	function hashClear() {
+	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+	}
+	
+	module.exports = hashClear;
+
+
+/***/ },
+/* 344 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(345);
+	
+	/* Built-in method references that are verified to be native. */
+	var nativeCreate = getNative(Object, 'create');
+	
+	module.exports = nativeCreate;
+
+
+/***/ },
+/* 345 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseIsNative = __webpack_require__(346),
+	    getValue = __webpack_require__(355);
+	
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = getValue(object, key);
+	  return baseIsNative(value) ? value : undefined;
+	}
+	
+	module.exports = getNative;
+
+
+/***/ },
+/* 346 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isFunction = __webpack_require__(347),
+	    isHostObject = __webpack_require__(349),
+	    isMasked = __webpack_require__(350),
+	    isObject = __webpack_require__(348),
+	    toSource = __webpack_require__(354);
+	
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns).
+	 */
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+	
+	/** Used to detect host constructors (Safari). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+	
+	/**
+	 * The base implementation of `_.isNative` without bad shim checks.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
+	 */
+	function baseIsNative(value) {
+	  if (!isObject(value) || isMasked(value)) {
+	    return false;
+	  }
+	  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
+	}
+	
+	module.exports = baseIsNative;
+
+
+/***/ },
+/* 347 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObject = __webpack_require__(348);
+	
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+	
+	module.exports = isFunction;
+
+
+/***/ },
+/* 348 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	module.exports = isObject;
+
+
+/***/ },
+/* 349 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+	
+	module.exports = isHostObject;
+
+
+/***/ },
+/* 350 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var coreJsData = __webpack_require__(351);
+	
+	/** Used to detect methods masquerading as native. */
+	var maskSrcKey = (function() {
+	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+	  return uid ? ('Symbol(src)_1.' + uid) : '';
+	}());
+	
+	/**
+	 * Checks if `func` has its source masked.
+	 *
+	 * @private
+	 * @param {Function} func The function to check.
+	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+	 */
+	function isMasked(func) {
+	  return !!maskSrcKey && (maskSrcKey in func);
+	}
+	
+	module.exports = isMasked;
+
+
+/***/ },
+/* 351 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(352);
+	
+	/** Used to detect overreaching core-js shims. */
+	var coreJsData = root['__core-js_shared__'];
+	
+	module.exports = coreJsData;
+
+
+/***/ },
+/* 352 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {var checkGlobal = __webpack_require__(353);
+	
+	/** Detect free variable `global` from Node.js. */
+	var freeGlobal = checkGlobal(typeof global == 'object' && global);
+	
+	/** Detect free variable `self`. */
+	var freeSelf = checkGlobal(typeof self == 'object' && self);
+	
+	/** Detect `this` as the global object. */
+	var thisGlobal = checkGlobal(typeof this == 'object' && this);
+	
+	/** Used as a reference to the global object. */
+	var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
+	
+	module.exports = root;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 353 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is a global object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {null|Object} Returns `value` if it's a global object, else `null`.
+	 */
+	function checkGlobal(value) {
+	  return (value && value.Object === Object) ? value : null;
+	}
+	
+	module.exports = checkGlobal;
+
+
+/***/ },
+/* 354 */
+/***/ function(module, exports) {
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = Function.prototype.toString;
+	
+	/**
+	 * Converts `func` to its source code.
+	 *
+	 * @private
+	 * @param {Function} func The function to process.
+	 * @returns {string} Returns the source code.
+	 */
+	function toSource(func) {
+	  if (func != null) {
+	    try {
+	      return funcToString.call(func);
+	    } catch (e) {}
+	    try {
+	      return (func + '');
+	    } catch (e) {}
+	  }
+	  return '';
+	}
+	
+	module.exports = toSource;
+
+
+/***/ },
+/* 355 */
+/***/ function(module, exports) {
+
+	/**
+	 * Gets the value at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} [object] The object to query.
+	 * @param {string} key The key of the property to get.
+	 * @returns {*} Returns the property value.
+	 */
+	function getValue(object, key) {
+	  return object == null ? undefined : object[key];
+	}
+	
+	module.exports = getValue;
+
+
+/***/ },
+/* 356 */
+/***/ function(module, exports) {
+
+	/**
+	 * Removes `key` and its value from the hash.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf Hash
+	 * @param {Object} hash The hash to modify.
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function hashDelete(key) {
+	  return this.has(key) && delete this.__data__[key];
+	}
+	
+	module.exports = hashDelete;
+
+
+/***/ },
+/* 357 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(344);
+	
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Gets the hash value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function hashGet(key) {
+	  var data = this.__data__;
+	  if (nativeCreate) {
+	    var result = data[key];
+	    return result === HASH_UNDEFINED ? undefined : result;
+	  }
+	  return hasOwnProperty.call(data, key) ? data[key] : undefined;
+	}
+	
+	module.exports = hashGet;
+
+
+/***/ },
+/* 358 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(344);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Checks if a hash value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf Hash
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function hashHas(key) {
+	  var data = this.__data__;
+	  return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+	}
+	
+	module.exports = hashHas;
+
+
+/***/ },
+/* 359 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var nativeCreate = __webpack_require__(344);
+	
+	/** Used to stand-in for `undefined` hash values. */
+	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+	
+	/**
+	 * Sets the hash `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf Hash
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the hash instance.
+	 */
+	function hashSet(key, value) {
+	  var data = this.__data__;
+	  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+	  return this;
+	}
+	
+	module.exports = hashSet;
+
+
+/***/ },
+/* 360 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var listCacheClear = __webpack_require__(361),
+	    listCacheDelete = __webpack_require__(362),
+	    listCacheGet = __webpack_require__(365),
+	    listCacheHas = __webpack_require__(366),
+	    listCacheSet = __webpack_require__(367);
+	
+	/**
+	 * Creates an list cache object.
+	 *
+	 * @private
+	 * @constructor
+	 * @param {Array} [entries] The key-value pairs to cache.
+	 */
+	function ListCache(entries) {
+	  var index = -1,
+	      length = entries ? entries.length : 0;
+	
+	  this.clear();
+	  while (++index < length) {
+	    var entry = entries[index];
+	    this.set(entry[0], entry[1]);
+	  }
+	}
+	
+	// Add methods to `ListCache`.
+	ListCache.prototype.clear = listCacheClear;
+	ListCache.prototype['delete'] = listCacheDelete;
+	ListCache.prototype.get = listCacheGet;
+	ListCache.prototype.has = listCacheHas;
+	ListCache.prototype.set = listCacheSet;
+	
+	module.exports = ListCache;
+
+
+/***/ },
+/* 361 */
+/***/ function(module, exports) {
+
+	/**
+	 * Removes all key-value entries from the list cache.
+	 *
+	 * @private
+	 * @name clear
+	 * @memberOf ListCache
+	 */
+	function listCacheClear() {
+	  this.__data__ = [];
+	}
+	
+	module.exports = listCacheClear;
+
+
+/***/ },
+/* 362 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(363);
+	
+	/** Used for built-in method references. */
+	var arrayProto = Array.prototype;
+	
+	/** Built-in value references. */
+	var splice = arrayProto.splice;
+	
+	/**
+	 * Removes `key` and its value from the list cache.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function listCacheDelete(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	
+	  if (index < 0) {
+	    return false;
+	  }
+	  var lastIndex = data.length - 1;
+	  if (index == lastIndex) {
+	    data.pop();
+	  } else {
+	    splice.call(data, index, 1);
+	  }
+	  return true;
+	}
+	
+	module.exports = listCacheDelete;
+
+
+/***/ },
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var eq = __webpack_require__(364);
+	
+	/**
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
+	 *
+	 * @private
+	 * @param {Array} array The array to search.
+	 * @param {*} key The key to search for.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function assocIndexOf(array, key) {
+	  var length = array.length;
+	  while (length--) {
+	    if (eq(array[length][0], key)) {
+	      return length;
+	    }
+	  }
+	  return -1;
+	}
+	
+	module.exports = assocIndexOf;
+
+
+/***/ },
+/* 364 */
+/***/ function(module, exports) {
+
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'user': 'fred' };
+	 * var other = { 'user': 'fred' };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
+	}
+	
+	module.exports = eq;
+
+
+/***/ },
+/* 365 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(363);
+	
+	/**
+	 * Gets the list cache value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function listCacheGet(key) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	
+	  return index < 0 ? undefined : data[index][1];
+	}
+	
+	module.exports = listCacheGet;
+
+
+/***/ },
+/* 366 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(363);
+	
+	/**
+	 * Checks if a list cache value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf ListCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function listCacheHas(key) {
+	  return assocIndexOf(this.__data__, key) > -1;
+	}
+	
+	module.exports = listCacheHas;
+
+
+/***/ },
+/* 367 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assocIndexOf = __webpack_require__(363);
+	
+	/**
+	 * Sets the list cache `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf ListCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the list cache instance.
+	 */
+	function listCacheSet(key, value) {
+	  var data = this.__data__,
+	      index = assocIndexOf(data, key);
+	
+	  if (index < 0) {
+	    data.push([key, value]);
+	  } else {
+	    data[index][1] = value;
+	  }
+	  return this;
+	}
+	
+	module.exports = listCacheSet;
+
+
+/***/ },
+/* 368 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getNative = __webpack_require__(345),
+	    root = __webpack_require__(352);
+	
+	/* Built-in method references that are verified to be native. */
+	var Map = getNative(root, 'Map');
+	
+	module.exports = Map;
+
+
+/***/ },
+/* 369 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(370);
+	
+	/**
+	 * Removes `key` and its value from the map.
+	 *
+	 * @private
+	 * @name delete
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to remove.
+	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+	 */
+	function mapCacheDelete(key) {
+	  return getMapData(this, key)['delete'](key);
+	}
+	
+	module.exports = mapCacheDelete;
+
+
+/***/ },
+/* 370 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isKeyable = __webpack_require__(371);
+	
+	/**
+	 * Gets the data for `map`.
+	 *
+	 * @private
+	 * @param {Object} map The map to query.
+	 * @param {string} key The reference key.
+	 * @returns {*} Returns the map data.
+	 */
+	function getMapData(map, key) {
+	  var data = map.__data__;
+	  return isKeyable(key)
+	    ? data[typeof key == 'string' ? 'string' : 'hash']
+	    : data.map;
+	}
+	
+	module.exports = getMapData;
+
+
+/***/ },
+/* 371 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is suitable for use as unique object key.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+	 */
+	function isKeyable(value) {
+	  var type = typeof value;
+	  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+	    ? (value !== '__proto__')
+	    : (value === null);
+	}
+	
+	module.exports = isKeyable;
+
+
+/***/ },
+/* 372 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(370);
+	
+	/**
+	 * Gets the map value for `key`.
+	 *
+	 * @private
+	 * @name get
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to get.
+	 * @returns {*} Returns the entry value.
+	 */
+	function mapCacheGet(key) {
+	  return getMapData(this, key).get(key);
+	}
+	
+	module.exports = mapCacheGet;
+
+
+/***/ },
+/* 373 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(370);
+	
+	/**
+	 * Checks if a map value for `key` exists.
+	 *
+	 * @private
+	 * @name has
+	 * @memberOf MapCache
+	 * @param {string} key The key of the entry to check.
+	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+	 */
+	function mapCacheHas(key) {
+	  return getMapData(this, key).has(key);
+	}
+	
+	module.exports = mapCacheHas;
+
+
+/***/ },
+/* 374 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var getMapData = __webpack_require__(370);
+	
+	/**
+	 * Sets the map `key` to `value`.
+	 *
+	 * @private
+	 * @name set
+	 * @memberOf MapCache
+	 * @param {string} key The key of the value to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns the map cache instance.
+	 */
+	function mapCacheSet(key, value) {
+	  getMapData(this, key).set(key, value);
+	  return this;
+	}
+	
+	module.exports = mapCacheSet;
+
+
+/***/ },
+/* 375 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseToString = __webpack_require__(376);
+	
+	/**
+	 * Converts `value` to a string. An empty string is returned for `null`
+	 * and `undefined` values. The sign of `-0` is preserved.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 * @example
+	 *
+	 * _.toString(null);
+	 * // => ''
+	 *
+	 * _.toString(-0);
+	 * // => '-0'
+	 *
+	 * _.toString([1, 2, 3]);
+	 * // => '1,2,3'
+	 */
+	function toString(value) {
+	  return value == null ? '' : baseToString(value);
+	}
+	
+	module.exports = toString;
+
+
+/***/ },
+/* 376 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Symbol = __webpack_require__(377),
+	    isSymbol = __webpack_require__(378);
+	
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+	
+	/** Used to convert symbols to primitives and strings. */
+	var symbolProto = Symbol ? Symbol.prototype : undefined,
+	    symbolToString = symbolProto ? symbolProto.toString : undefined;
+	
+	/**
+	 * The base implementation of `_.toString` which doesn't convert nullish
+	 * values to empty strings.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  // Exit early for strings to avoid a performance hit in some environments.
+	  if (typeof value == 'string') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return symbolToString ? symbolToString.call(value) : '';
+	  }
+	  var result = (value + '');
+	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+	}
+	
+	module.exports = baseToString;
+
+
+/***/ },
+/* 377 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var root = __webpack_require__(352);
+	
+	/** Built-in value references. */
+	var Symbol = root.Symbol;
+	
+	module.exports = Symbol;
+
+
+/***/ },
+/* 378 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isObjectLike = __webpack_require__(379);
+	
+	/** `Object#toString` result references. */
+	var symbolTag = '[object Symbol]';
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+	
+	module.exports = isSymbol;
+
+
+/***/ },
+/* 379 */
+/***/ function(module, exports) {
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 380 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isArray = __webpack_require__(337),
+	    isSymbol = __webpack_require__(378);
+	
+	/** Used to match property names within property paths. */
+	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+	    reIsPlainProp = /^\w*$/;
+	
+	/**
+	 * Checks if `value` is a property name and not a property path.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {Object} [object] The object to query keys on.
+	 * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+	 */
+	function isKey(value, object) {
+	  if (isArray(value)) {
+	    return false;
+	  }
+	  var type = typeof value;
+	  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+	      value == null || isSymbol(value)) {
+	    return true;
+	  }
+	  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+	    (object != null && value in Object(object));
+	}
+	
+	module.exports = isKey;
+
+
+/***/ },
+/* 381 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var isSymbol = __webpack_require__(378);
+	
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+	
+	/**
+	 * Converts `value` to a string key if it's not a string or symbol.
+	 *
+	 * @private
+	 * @param {*} value The value to inspect.
+	 * @returns {string|symbol} Returns the key.
+	 */
+	function toKey(value) {
+	  if (typeof value == 'string' || isSymbol(value)) {
+	    return value;
+	  }
+	  var result = (value + '');
+	  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+	}
+	
+	module.exports = toKey;
+
+
+/***/ },
+/* 382 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _set = __webpack_require__(383);
+	
+	var _set2 = _interopRequireDefault(_set);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (url) {
+	  // add the value to the input object and pass it to output
+	  return function output(_ref, value) {
+	    var input = _ref.input;
+	    var output = _ref.output;
+	
+	    var outputValue = value && typeof value.toJS === 'function' ? value.toJS() : value && value.constructor === Object && Object.isFrozen(value) ? JSON.parse(JSON.stringify(value)) : value;
+	    (0, _set2.default)(input, url.path, outputValue);
+	    output(input);
+	    return value;
+	  };
+	};
+
+/***/ },
+/* 383 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var baseSet = __webpack_require__(384);
+	
+	/**
+	 * Sets the value at `path` of `object`. If a portion of `path` doesn't exist,
+	 * it's created. Arrays are created for missing index properties while objects
+	 * are created for all other missing properties. Use `_.setWith` to customize
+	 * `path` creation.
+	 *
+	 * **Note:** This method mutates `object`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.7.0
+	 * @category Object
+	 * @param {Object} object The object to modify.
+	 * @param {Array|string} path The path of the property to set.
+	 * @param {*} value The value to set.
+	 * @returns {Object} Returns `object`.
+	 * @example
+	 *
+	 * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+	 *
+	 * _.set(object, 'a[0].b.c', 4);
+	 * console.log(object.a[0].b.c);
+	 * // => 4
+	 *
+	 * _.set(object, ['x', '0', 'y', 'z'], 5);
+	 * console.log(object.x[0].y.z);
+	 * // => 5
+	 */
+	function set(object, path, value) {
+	  return object == null ? object : baseSet(object, path, value);
+	}
+	
+	module.exports = set;
+
+
+/***/ },
+/* 384 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var assignValue = __webpack_require__(385),
+	    castPath = __webpack_require__(336),
+	    isIndex = __webpack_require__(386),
+	    isKey = __webpack_require__(380),
+	    isObject = __webpack_require__(348),
+	    toKey = __webpack_require__(381);
+	
+	/**
+	 * The base implementation of `_.set`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array|string} path The path of the property to set.
+	 * @param {*} value The value to set.
+	 * @param {Function} [customizer] The function to customize path creation.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseSet(object, path, value, customizer) {
+	  path = isKey(path, object) ? [path] : castPath(path);
+	
+	  var index = -1,
+	      length = path.length,
+	      lastIndex = length - 1,
+	      nested = object;
+	
+	  while (nested != null && ++index < length) {
+	    var key = toKey(path[index]);
+	    if (isObject(nested)) {
+	      var newValue = value;
+	      if (index != lastIndex) {
+	        var objValue = nested[key];
+	        newValue = customizer ? customizer(objValue, key, nested) : undefined;
+	        if (newValue === undefined) {
+	          newValue = objValue == null
+	            ? (isIndex(path[index + 1]) ? [] : {})
+	            : objValue;
+	        }
+	      }
+	      assignValue(nested, key, newValue);
+	    }
+	    nested = nested[key];
+	  }
+	  return object;
+	}
+	
+	module.exports = baseSet;
+
+
+/***/ },
+/* 385 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var eq = __webpack_require__(364);
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Assigns `value` to `key` of `object` if the existing value is not equivalent
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+	function assignValue(object, key, value) {
+	  var objValue = object[key];
+	  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+	      (value === undefined && !(key in object))) {
+	    object[key] = value;
+	  }
+	}
+	
+	module.exports = assignValue;
+
+
+/***/ },
+/* 386 */
+/***/ function(module, exports) {
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+	
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+	
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return !!length &&
+	    (typeof value == 'number' || reIsUint.test(value)) &&
+	    (value > -1 && value % 1 == 0 && value < length);
+	}
+	
+	module.exports = isIndex;
+
+
+/***/ },
+/* 387 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (url, fn, isGetter) {
+	  var stateFn = function state(_ref) {
+	    var state = _ref.state;
+	
+	    for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      values[_key - 1] = arguments[_key];
+	    }
+	
+	    if (isGetter) {
+	      return state[fn].apply(state, [url.path].concat(values));
+	    } else {
+	      state[fn].apply(state, [url.path].concat(values));
+	      return values.length === 1 ? values[0] : values;
+	    }
+	  };
+	  stateFn.displayName = "state." + fn;
+	  return stateFn;
+	};
+
+/***/ },
+/* 388 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = parseUrl;
+	var regex = /^(\w+):([\w\.]+)$/;
+	
+	function parseUrl(url) {
+	  var match = regex.exec(url);
+	  return !match ? null : {
+	    scheme: match[1],
+	    path: match[2]
+	  };
+	}
+
+/***/ },
+/* 389 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30731,7 +32955,7 @@
 	}
 
 /***/ },
-/* 319 */
+/* 390 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -30745,14 +32969,14 @@
 	};
 
 /***/ },
-/* 320 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(321).default
+	module.exports = __webpack_require__(392).default
 
 
 /***/ },
-/* 321 */
+/* 392 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30772,7 +32996,7 @@
 	};
 
 /***/ },
-/* 322 */
+/* 393 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -30796,24 +33020,24 @@
 	};
 
 /***/ },
-/* 323 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-env browser*/
-	var SignalStore = __webpack_require__(324)
-	var utils = __webpack_require__(329)
+	var SignalStore = __webpack_require__(395)
+	var utils = __webpack_require__(400)
 	var requestAnimationFrame = requestAnimationFrame || function (cb) { setTimeout(cb) }
-	var staticTree = __webpack_require__(234)
+	var staticTree = __webpack_require__(199)
 	
 	module.exports = function Devtools () {
 	  if (typeof window === 'undefined') { return function () {} }
 	  if (typeof window.chrome === 'undefined') { return function () {} }
 	
 	  return function init (module, controller) {
-	    controller.addContextProvider(__webpack_require__(330))
-	    controller.addContextProvider(__webpack_require__(331))
-	    controller.addContextProvider(__webpack_require__(332))
-	    controller.addContextProvider(__webpack_require__(333))
+	    controller.addContextProvider(__webpack_require__(401))
+	    controller.addContextProvider(__webpack_require__(402))
+	    controller.addContextProvider(__webpack_require__(403))
+	    controller.addContextProvider(__webpack_require__(404))
 	
 	    module.addModules({
 	      store: SignalStore()
@@ -31061,7 +33285,7 @@
 
 
 /***/ },
-/* 324 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31070,7 +33294,7 @@
 	  is able to reset state and travel to a "specific point in time" by playing back the signals up to a certain
 	  signal.
 	*/
-	var uuid = __webpack_require__(325)
+	var uuid = __webpack_require__(396)
 	
 	module.exports = function SignalStore () {
 	  return function (module, controller) {
@@ -31081,8 +33305,8 @@
 	    var asyncActionsRunning = []
 	
 	    if (controller.addContextProvider) {
-	      controller.addContextProvider(__webpack_require__(327))
-	      controller.addContextProvider(__webpack_require__(328))
+	      controller.addContextProvider(__webpack_require__(398))
+	      controller.addContextProvider(__webpack_require__(399))
 	    }
 	
 	    var addAsyncAction = function (action) {
@@ -31243,7 +33467,7 @@
 
 
 /***/ },
-/* 325 */
+/* 396 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//     uuid.js
@@ -31254,7 +33478,7 @@
 	// Unique ID creation requires a high quality random # generator.  We feature
 	// detect to determine the best RNG source, normalizing to a function that
 	// returns 128-bits of randomness, since that's what's usually required
-	var _rng = __webpack_require__(326);
+	var _rng = __webpack_require__(397);
 	
 	// Maps for number <-> hex string conversion
 	var _byteToHex = [];
@@ -31432,7 +33656,7 @@
 
 
 /***/ },
-/* 326 */
+/* 397 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -31470,7 +33694,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 327 */
+/* 398 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31480,7 +33704,7 @@
 
 
 /***/ },
-/* 328 */
+/* 399 */
 /***/ function(module, exports) {
 
 	/*
@@ -31527,7 +33751,7 @@
 
 
 /***/ },
-/* 329 */
+/* 400 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {module.exports = {
@@ -31554,7 +33778,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 330 */
+/* 401 */
 /***/ function(module, exports) {
 
 	var convertServices = function (action, path, modulesPaths, services) {
@@ -31604,7 +33828,7 @@
 
 
 /***/ },
-/* 331 */
+/* 402 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31632,7 +33856,7 @@
 
 
 /***/ },
-/* 332 */
+/* 403 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31642,7 +33866,7 @@
 
 
 /***/ },
-/* 333 */
+/* 404 */
 /***/ function(module, exports) {
 
 	module.exports = function (context, execution) {
@@ -31653,11 +33877,11 @@
 
 
 /***/ },
-/* 334 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MODULE = 'cerebral-module-recorder'
-	var signals = __webpack_require__(335)
+	var signals = __webpack_require__(406)
 	
 	module.exports = function (options) {
 	  options = options || {}
@@ -31839,9 +34063,9 @@
 	      path: module.path
 	    }
 	    controller.addContextProvider(context)
-	    controller.addContextProvider(__webpack_require__(328))
-	    controller.addContextProvider(__webpack_require__(327))
-	    controller.addContextProvider(__webpack_require__(336)({
+	    controller.addContextProvider(__webpack_require__(399))
+	    controller.addContextProvider(__webpack_require__(398))
+	    controller.addContextProvider(__webpack_require__(407)({
 	      count: runningSignalCount
 	    }))
 	
@@ -31876,7 +34100,7 @@
 
 
 /***/ },
-/* 335 */
+/* 406 */
 /***/ function(module, exports) {
 
 	var MODULE = 'cerebral-module-recorder'
@@ -31991,7 +34215,7 @@
 
 
 /***/ },
-/* 336 */
+/* 407 */
 /***/ function(module, exports) {
 
 	module.exports = function (clojure) {
@@ -32005,30 +34229,17 @@
 
 
 /***/ },
-/* 337 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Router = __webpack_require__(338)
-	var urlMapper = __webpack_require__(345)
+	var MODULE = 'cerebral-module-router'
+	var isObject = __webpack_require__(348)
+	var get = __webpack_require__(334)
 	
-	module.exports = function DefaultRouter (routesConfig, options) {
-	  options = options || {}
-	  options.mapper = urlMapper({ query: options.query })
-	
-	  return Router(routesConfig, options)
-	}
-
-
-/***/ },
-/* 338 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var get = __webpack_require__(182)
-	var utils = __webpack_require__(339)
-	
+	var Mapper = __webpack_require__(409)
 	var addressbar
 	try {
-	  addressbar = __webpack_require__(340)
+	  addressbar = __webpack_require__(415)
 	} catch (e) {
 	  addressbar = {
 	    pathname: '/',
@@ -32044,15 +34255,11 @@
 	function Router (routesConfig, options) {
 	  options = options || {}
 	
-	  if (!options.mapper || typeof options.mapper.map !== 'function') {
-	    throw new Error('Cerebral router - mapper option must be provided.')
-	  }
-	
 	  if (!routesConfig) {
 	    console.warn('Cerebral router - Routes configuration wasn\'t provided.')
 	    return function () {}
 	  } else {
-	    routesConfig = utils.flattenConfig(routesConfig)
+	    routesConfig = flattenConfig(routesConfig)
 	  }
 	
 	  if (!options.baseUrl && options.onlyHash) {
@@ -32061,8 +34268,15 @@
 	  }
 	  options.baseUrl = (options.baseUrl || '') + (options.onlyHash ? '#' : '')
 	
+	  if (options.mapper) {
+	    options.query = options.mapper.query
+	    console.warn('Cerebral router - passing options object to mapper is deprecated. Use router `query` option directly.')
+	  }
+	
+	  var urlMapper = Mapper({ query: options.query })
+	
 	  return function init (module, controller) {
-	    var signals = utils.getRoutableSignals(routesConfig, controller.getSignals())
+	    var signals = getRoutableSignals(routesConfig, controller.getSignals())
 	    var rememberedUrl
 	    var initialSignals
 	
@@ -32082,7 +34296,7 @@
 	
 	      // check if url should be routed
 	      if (url.indexOf(options.baseUrl) === 0) {
-	        var map = options.mapper.map(url.replace(options.baseUrl, ''), routesConfig)
+	        var map = urlMapper.map(url.replace(options.baseUrl, ''), routesConfig)
 	
 	        if (map) {
 	          event && event.preventDefault()
@@ -32115,7 +34329,7 @@
 	
 	        var route = signal.route
 	        var input = event.signal.input || event.payload || {}
-	        rememberedUrl = options.baseUrl + options.mapper.stringify(route, input)
+	        rememberedUrl = options.baseUrl + urlMapper.stringify(route, input)
 	      }
 	    }
 	
@@ -32128,7 +34342,7 @@
 	      if (signal && (!event.signal.isRouted && !(event.options && event.options.isRouted))) {
 	        var route = signal.route
 	        var input = event.signal.input || event.payload || {}
-	        addressbar.value = options.baseUrl + options.mapper.stringify(route, input)
+	        addressbar.value = options.baseUrl + urlMapper.stringify(route, input)
 	      }
 	    }
 	
@@ -32169,7 +34383,7 @@
 	      getSignalUrl: function getSignalUrl (signalName, input) {
 	        if (signals[signalName]) {
 	          var route = signals[signalName].route
-	          return options.baseUrl + options.mapper.stringify(route, input || {})
+	          return options.baseUrl + urlMapper.stringify(route, input || {})
 	        } else {
 	          return false
 	        }
@@ -32197,6 +34411,7 @@
 	      }
 	    }
 	
+	    module.alias(MODULE)
 	    module.addServices(services)
 	    addressbar.on('change', onUrlChange)
 	    controller.on('predefinedSignal', onPredefinedSignal)
@@ -32209,21 +34424,24 @@
 	    }
 	
 	    var context = {}
-	    context[utils.MODULE] = {
+	    context[MODULE] = {
 	      path: module.path
 	    }
 	    controller.addContextProvider(context)
 	  }
 	}
-
-
-/***/ },
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var MODULE = 'cerebral-module-router'
-	var isObject = __webpack_require__(196)
-	var get = __webpack_require__(182)
+	
+	Router.redirect = function (url, params) {
+	  function action (ctx) {
+	    var services = get(ctx.services, ctx[MODULE].path)
+	
+	    return services.redirect(url, params)
+	  }
+	
+	  action.displayName = 'redirect(' + url + ')'
+	
+	  return action
+	}
 	
 	function flattenConfig (config, prev, flatten) {
 	  flatten = flatten || {}
@@ -32263,694 +34481,15 @@
 	
 	  return routableSignals
 	}
-	
-	module.exports = {
-	  flattenConfig: flattenConfig,
-	  getRoutableSignals: getRoutableSignals,
-	  MODULE: MODULE
-	}
 
 
 /***/ },
-/* 340 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/* global history */
-	
-	var URL = __webpack_require__(341)
-	var EventEmitter = __webpack_require__(242).EventEmitter
-	var instance = null
-	
-	// Check if IE history polyfill is added
-	var location = window.history.location || window.location
-	
-	module.exports = (function () {
-	  if (instance) {
-	    return instance
-	  }
-	
-	  var eventEmitter = new EventEmitter()
-	
-	  eventEmitter.addEventListener = eventEmitter.addListener
-	  eventEmitter.removeEventListener = eventEmitter.removeListener
-	
-	  var initialUrl = location.href
-	  var uri = URL(initialUrl)
-	  var origin = uri.protocol + '//' + uri.host
-	  var isPreventingDefault = false
-	  var doReplace = false
-	  var prevUrl = ''
-	  // var linkClicked = false
-	  var isEmitting = false
-	  var setSyncUrl = false
-	
-	  var emitChange = function (url, event) {
-	    eventEmitter.emit('change', {
-	      preventDefault: function () {
-	        event && event.preventDefault()
-	        isPreventingDefault = true
-	      },
-	      target: {
-	        value: url ? origin + url : location.href
-	      }
-	    })
-	  }
-	
-	  var onUrlChange = function (type) {
-	    return function (event) {
-	      if (location.href === prevUrl) {
-	        return
-	      }
-	
-	      // Fixes bug where trailing slash is converted to normal url
-	      if (location.href[location.href.length - 1] === '/') {
-	        doReplace = true
-	      }
-	
-	      isEmitting = true
-	      emitChange()
-	      isEmitting = false
-	
-	      if (!setSyncUrl && isPreventingDefault) {
-	        history.replaceState({}, '', (prevUrl || initialUrl).replace(origin, ''))
-	      }
-	
-	      prevUrl = location.href
-	      isPreventingDefault = false
-	      setSyncUrl = false
-	      doReplace = false
-	    }
-	  }
-	
-	  // this hack resolves issue with safari
-	  // see issue from Page JS for reference https://github.com/visionmedia/page.js/issues/213
-	  // see also https://github.com/visionmedia/page.js/pull/240
-	  if (document.readyState !== 'complete') {
-	    // load event has not fired
-	    global.addEventListener('load', function () {
-	      setTimeout(function () {
-	        global.addEventListener('popstate', onUrlChange('pop'), false)
-	      }, 0)
-	    }, false)
-	  } else {
-	    // load event has fired
-	    global.addEventListener('popstate', onUrlChange('pop'), false)
-	  }
-	
-	  Object.defineProperty(eventEmitter, 'value', {
-	    get: function () {
-	      return location.href
-	    },
-	    set: function (value) {
-	      if (typeof value !== 'string') {
-	        doReplace = Boolean(value.replace)
-	        value = value.value
-	      }
-	
-	      // If emitting a change we flag that we are setting
-	      // a url based on the event being emitted
-	      if (isEmitting) {
-	        setSyncUrl = true
-	      }
-	
-	      // Ensure full url
-	      if (value.indexOf(origin) === -1) {
-	        value = origin + value
-	      }
-	
-	      // If it is same url, forget about it
-	      if (value === location.href) {
-	        return
-	      }
-	
-	      // We might need to replace the url if we are fixing
-	      // for example trailing slash issue
-	      if (doReplace) {
-	        history.replaceState({}, '', value.replace(origin, ''))
-	        doReplace = false
-	      } else {
-	        history.pushState({}, '', value.replace(origin, ''))
-	      }
-	
-	      prevUrl = location.href
-	      isPreventingDefault = false
-	    }
-	  })
-	
-	  // expose URLUtils like API https://developer.mozilla.org/en-US/docs/Web/API/URLUtils
-	  // thanks https://github.com/cofounders/urlutils for reference
-	  Object.defineProperty(eventEmitter, 'origin', {
-	    get: function () {
-	      var uri = URL(location.href)
-	      return uri.protocol + '//' + uri.host
-	    }
-	  })
-	
-	  Object.defineProperty(eventEmitter, 'protocol', {
-	    get: function () {
-	      return URL(location.href).protocol
-	    }
-	  })
-	
-	  Object.defineProperty(eventEmitter, 'port', {
-	    get: function () {
-	      return URL(location.href).port
-	    }
-	  })
-	
-	  Object.defineProperty(eventEmitter, 'hostname', {
-	    get: function () {
-	      return URL(location.href).hostname
-	    }
-	  })
-	
-	  Object.defineProperty(eventEmitter, 'pathname', {
-	    get: function () {
-	      return URL(location.href).pathname
-	    }
-	  })
-	
-	  Object.defineProperty(eventEmitter, 'hash', {
-	    get: function () {
-	      return URL(location.href).hash
-	    }
-	  })
-	
-	  /*
-	    This code is from the Page JS source code. Amazing work on handling all
-	    kinds of scenarios with hyperlinks, thanks!
-	  */
-	
-	  var isSameOrigin = function (href) {
-	    return (href && (href.indexOf(origin) === 0))
-	  }
-	
-	  var getClickedHref = function (event) {
-	    // check which button
-	    if ((event.which === null ? event.button : event.which) !== 1) { return false }
-	
-	    // check for modifiers
-	    if (event.metaKey || event.ctrlKey || event.shiftKey) { return false }
-	    if (event.defaultPrevented) { return false }
-	
-	    // ensure link
-	    var element = event.target
-	    while (element && element.nodeName !== 'A') { element = element.parentNode }
-	    if (!element || element.nodeName !== 'A') { return false }
-	
-	    // Ignore if tag has
-	    // 1. "download" attribute
-	    // 2. rel="external" attribute
-	    if (element.hasAttribute('download') || element.getAttribute('rel') === 'external') { return false }
-	
-	    // Check for mailto: in the href
-	    var href = element.getAttribute('href')
-	    if (href && href.indexOf('mailto:') > -1) { return false }
-	
-	    // check target
-	    if (element.target) { return false }
-	
-	    // x-origin
-	    if (!isSameOrigin(element.href)) { return false }
-	
-	    return href
-	  }
-	
-	  global.addEventListener(document.ontouchstart ? 'touchstart' : 'click', function (event) {
-	    var href = getClickedHref(event)
-	    if (href) {
-	      // linkClicked = true
-	      isEmitting = true
-	      emitChange(href, event)
-	      isEmitting = false
-	      if (isPreventingDefault) {
-	        // linkClicked = false
-	      }
-	      prevUrl = href
-	      isPreventingDefault = false
-	    }
-	  })
-	
-	  instance = eventEmitter
-	
-	  return eventEmitter
-	}())
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 341 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var required = __webpack_require__(342)
-	  , lolcation = __webpack_require__(343)
-	  , qs = __webpack_require__(344)
-	  , relativere = /^\/(?!\/)/
-	  , protocolre = /^([a-z0-9.+-]+:)?(\/\/)?(.*)$/i; // actual protocol is first match
-	
-	/**
-	 * These are the parse instructions for the URL parsers, it informs the parser
-	 * about:
-	 *
-	 * 0. The char it Needs to parse, if it's a string it should be done using
-	 *    indexOf, RegExp using exec and NaN means set as current value.
-	 * 1. The property we should set when parsing this value.
-	 * 2. Indication if it's backwards or forward parsing, when set as number it's
-	 *    the value of extra chars that should be split off.
-	 * 3. Inherit from location if non existing in the parser.
-	 * 4. `toLowerCase` the resulting value.
-	 */
-	var instructions = [
-	  ['#', 'hash'],                        // Extract from the back.
-	  ['?', 'query'],                       // Extract from the back.
-	  ['/', 'pathname'],                    // Extract from the back.
-	  ['@', 'auth', 1],                     // Extract from the front.
-	  [NaN, 'host', undefined, 1, 1],       // Set left over value.
-	  [/\:(\d+)$/, 'port'],                 // RegExp the back.
-	  [NaN, 'hostname', undefined, 1, 1]    // Set left over.
-	];
-	
-	 /**
-	 * @typedef ProtocolExtract
-	 * @type Object
-	 * @property {String} protocol Protocol matched in the URL, in lowercase
-	 * @property {Boolean} slashes Indicates whether the protocol is followed by double slash ("//")
-	 * @property {String} rest     Rest of the URL that is not part of the protocol
-	 */
-	
-	 /**
-	  * Extract protocol information from a URL with/without double slash ("//")
-	  *
-	  * @param  {String} address   URL we want to extract from.
-	  * @return {ProtocolExtract}  Extracted information
-	  * @private
-	  */
-	function extractProtocol(address) {
-	  var match = protocolre.exec(address);
-	  return {
-	    protocol: match[1] ? match[1].toLowerCase() : '',
-	    slashes: !!match[2],
-	    rest: match[3] ? match[3] : ''
-	  };
-	}
-	
-	/**
-	 * The actual URL instance. Instead of returning an object we've opted-in to
-	 * create an actual constructor as it's much more memory efficient and
-	 * faster and it pleases my CDO.
-	 *
-	 * @constructor
-	 * @param {String} address URL we want to parse.
-	 * @param {Object|String} location Location defaults for relative paths.
-	 * @param {Boolean|Function} parser Parser for the query string.
-	 * @api public
-	 */
-	function URL(address, location, parser) {
-	  if (!(this instanceof URL)) {
-	    return new URL(address, location, parser);
-	  }
-	
-	  var relative = relativere.test(address)
-	    , parse, instruction, index, key
-	    , type = typeof location
-	    , url = this
-	    , i = 0;
-	
-	  //
-	  // The following if statements allows this module two have compatibility with
-	  // 2 different API:
-	  //
-	  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
-	  //    where the boolean indicates that the query string should also be parsed.
-	  //
-	  // 2. The `URL` interface of the browser which accepts a URL, object as
-	  //    arguments. The supplied object will be used as default values / fall-back
-	  //    for relative paths.
-	  //
-	  if ('object' !== type && 'string' !== type) {
-	    parser = location;
-	    location = null;
-	  }
-	
-	  if (parser && 'function' !== typeof parser) {
-	    parser = qs.parse;
-	  }
-	
-	  location = lolcation(location);
-	
-	  // extract protocol information before running the instructions
-	  var extracted = extractProtocol(address);
-	  url.protocol = extracted.protocol || location.protocol || '';
-	  url.slashes = extracted.slashes || location.slashes;
-	  address = extracted.rest;
-	
-	  for (; i < instructions.length; i++) {
-	    instruction = instructions[i];
-	    parse = instruction[0];
-	    key = instruction[1];
-	
-	    if (parse !== parse) {
-	      url[key] = address;
-	    } else if ('string' === typeof parse) {
-	      if (~(index = address.indexOf(parse))) {
-	        if ('number' === typeof instruction[2]) {
-	          url[key] = address.slice(0, index);
-	          address = address.slice(index + instruction[2]);
-	        } else {
-	          url[key] = address.slice(index);
-	          address = address.slice(0, index);
-	        }
-	      }
-	    } else if (index = parse.exec(address)) {
-	      url[key] = index[1];
-	      address = address.slice(0, address.length - index[0].length);
-	    }
-	
-	    url[key] = url[key] || (instruction[3] || ('port' === key && relative) ? location[key] || '' : '');
-	
-	    //
-	    // Hostname, host and protocol should be lowercased so they can be used to
-	    // create a proper `origin`.
-	    //
-	    if (instruction[4]) {
-	      url[key] = url[key].toLowerCase();
-	    }
-	  }
-	
-	  //
-	  // Also parse the supplied query string in to an object. If we're supplied
-	  // with a custom parser as function use that instead of the default build-in
-	  // parser.
-	  //
-	  if (parser) url.query = parser(url.query);
-	
-	  //
-	  // We should not add port numbers if they are already the default port number
-	  // for a given protocol. As the host also contains the port number we're going
-	  // override it with the hostname which contains no port number.
-	  //
-	  if (!required(url.port, url.protocol)) {
-	    url.host = url.hostname;
-	    url.port = '';
-	  }
-	
-	  //
-	  // Parse down the `auth` for the username and password.
-	  //
-	  url.username = url.password = '';
-	  if (url.auth) {
-	    instruction = url.auth.split(':');
-	    url.username = instruction[0] || '';
-	    url.password = instruction[1] || '';
-	  }
-	
-	  //
-	  // The href is just the compiled result.
-	  //
-	  url.href = url.toString();
-	}
-	
-	/**
-	 * This is convenience method for changing properties in the URL instance to
-	 * insure that they all propagate correctly.
-	 *
-	 * @param {String} prop          Property we need to adjust.
-	 * @param {Mixed} value          The newly assigned value.
-	 * @param {Boolean|Function} fn  When setting the query, it will be the function used to parse
-	 *                               the query.
-	 *                               When setting the protocol, double slash will be removed from
-	 *                               the final url if it is true.
-	 * @returns {URL}
-	 * @api public
-	 */
-	URL.prototype.set = function set(part, value, fn) {
-	  var url = this;
-	
-	  if ('query' === part) {
-	    if ('string' === typeof value && value.length) {
-	      value = (fn || qs.parse)(value);
-	    }
-	
-	    url[part] = value;
-	  } else if ('port' === part) {
-	    url[part] = value;
-	
-	    if (!required(value, url.protocol)) {
-	      url.host = url.hostname;
-	      url[part] = '';
-	    } else if (value) {
-	      url.host = url.hostname +':'+ value;
-	    }
-	  } else if ('hostname' === part) {
-	    url[part] = value;
-	
-	    if (url.port) value += ':'+ url.port;
-	    url.host = value;
-	  } else if ('host' === part) {
-	    url[part] = value;
-	
-	    if (/\:\d+/.test(value)) {
-	      value = value.split(':');
-	      url.hostname = value[0];
-	      url.port = value[1];
-	    }
-	  } else if ('protocol' === part) {
-	    url.protocol = value;
-	    url.slashes = !fn;
-	  } else {
-	    url[part] = value;
-	  }
-	
-	  url.href = url.toString();
-	  return url;
-	};
-	
-	/**
-	 * Transform the properties back in to a valid and full URL string.
-	 *
-	 * @param {Function} stringify Optional query stringify function.
-	 * @returns {String}
-	 * @api public
-	 */
-	URL.prototype.toString = function toString(stringify) {
-	  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
-	
-	  var query
-	    , url = this
-	    , protocol = url.protocol;
-	
-	  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
-	
-	  var result = protocol + (url.slashes ? '//' : '');
-	
-	  if (url.username) {
-	    result += url.username;
-	    if (url.password) result += ':'+ url.password;
-	    result += '@';
-	  }
-	
-	  result += url.hostname;
-	  if (url.port) result += ':'+ url.port;
-	
-	  result += url.pathname;
-	
-	  query = 'object' === typeof url.query ? stringify(url.query) : url.query;
-	  if (query) result += '?' !== query.charAt(0) ? '?'+ query : query;
-	
-	  if (url.hash) result += url.hash;
-	
-	  return result;
-	};
-	
-	//
-	// Expose the URL parser and some additional properties that might be useful for
-	// others.
-	//
-	URL.qs = qs;
-	URL.location = lolcation;
-	module.exports = URL;
-
-
-/***/ },
-/* 342 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	/**
-	 * Check if we're required to add a port number.
-	 *
-	 * @see https://url.spec.whatwg.org/#default-port
-	 * @param {Number|String} port Port number we need to check
-	 * @param {String} protocol Protocol we need to check against.
-	 * @returns {Boolean} Is it a default port for the given protocol
-	 * @api private
-	 */
-	module.exports = function required(port, protocol) {
-	  protocol = protocol.split(':')[0];
-	  port = +port;
-	
-	  if (!port) return false;
-	
-	  switch (protocol) {
-	    case 'http':
-	    case 'ws':
-	    return port !== 80;
-	
-	    case 'https':
-	    case 'wss':
-	    return port !== 443;
-	
-	    case 'ftp':
-	    return port !== 21;
-	
-	    case 'gopher':
-	    return port !== 70;
-	
-	    case 'file':
-	    return false;
-	  }
-	
-	  return port !== 0;
-	};
-
-
-/***/ },
-/* 343 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-	
-	var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
-	
-	/**
-	 * These properties should not be copied or inherited from. This is only needed
-	 * for all non blob URL's as a blob URL does not include a hash, only the
-	 * origin.
-	 *
-	 * @type {Object}
-	 * @private
-	 */
-	var ignore = { hash: 1, query: 1 }
-	  , URL;
-	
-	/**
-	 * The location object differs when your code is loaded through a normal page,
-	 * Worker or through a worker using a blob. And with the blobble begins the
-	 * trouble as the location object will contain the URL of the blob, not the
-	 * location of the page where our code is loaded in. The actual origin is
-	 * encoded in the `pathname` so we can thankfully generate a good "default"
-	 * location from it so we can generate proper relative URL's again.
-	 *
-	 * @param {Object|String} loc Optional default location object.
-	 * @returns {Object} lolcation object.
-	 * @api public
-	 */
-	module.exports = function lolcation(loc) {
-	  loc = loc || global.location || {};
-	  URL = URL || __webpack_require__(341);
-	
-	  var finaldestination = {}
-	    , type = typeof loc
-	    , key;
-	
-	  if ('blob:' === loc.protocol) {
-	    finaldestination = new URL(unescape(loc.pathname), {});
-	  } else if ('string' === type) {
-	    finaldestination = new URL(loc, {});
-	    for (key in ignore) delete finaldestination[key];
-	  } else if ('object' === type) {
-	    for (key in loc) {
-	      if (key in ignore) continue;
-	      finaldestination[key] = loc[key];
-	    }
-	
-	    if (finaldestination.slashes === undefined) {
-	      finaldestination.slashes = slashes.test(loc.href);
-	    }
-	  }
-	
-	  return finaldestination;
-	};
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 344 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var has = Object.prototype.hasOwnProperty;
-	
-	/**
-	 * Simple query string parser.
-	 *
-	 * @param {String} query The query string that needs to be parsed.
-	 * @returns {Object}
-	 * @api public
-	 */
-	function querystring(query) {
-	  var parser = /([^=?&]+)=([^&]*)/g
-	    , result = {}
-	    , part;
-	
-	  //
-	  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
-	  // the lastIndex property so we can continue executing this loop until we've
-	  // parsed all results.
-	  //
-	  for (;
-	    part = parser.exec(query);
-	    result[decodeURIComponent(part[1])] = decodeURIComponent(part[2])
-	  );
-	
-	  return result;
-	}
-	
-	/**
-	 * Transform a query string to an object.
-	 *
-	 * @param {Object} obj Object that should be transformed.
-	 * @param {String} prefix Optional prefix.
-	 * @returns {String}
-	 * @api public
-	 */
-	function querystringify(obj, prefix) {
-	  prefix = prefix || '';
-	
-	  var pairs = [];
-	
-	  //
-	  // Optionally prefix with a '?' if needed
-	  //
-	  if ('string' !== typeof prefix) prefix = '?';
-	
-	  for (var key in obj) {
-	    if (has.call(obj, key)) {
-	      pairs.push(encodeURIComponent(key) +'='+ encodeURIComponent(obj[key]));
-	    }
-	  }
-	
-	  return pairs.length ? prefix + pairs.join('&') : '';
-	}
-	
-	//
-	// Expose the module.
-	//
-	exports.stringify = querystringify;
-	exports.parse = querystring;
-
-
-/***/ },
-/* 345 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
-	var mapper = __webpack_require__(346)
-	var compileRoute = __webpack_require__(347)
+	var mapper = __webpack_require__(410)
+	var compileRoute = __webpack_require__(411)
 	
 	module.exports = function urlMapper (options) {
 	  return mapper(compileRoute, options)
@@ -32958,7 +34497,7 @@
 
 
 /***/ },
-/* 346 */
+/* 410 */
 /***/ function(module, exports) {
 
 	module.exports = function mapper (compileFn, options) {
@@ -33011,12 +34550,12 @@
 
 
 /***/ },
-/* 347 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict'
-	var URLON = __webpack_require__(348)
-	var pathToRegexp = __webpack_require__(349)
+	var URLON = __webpack_require__(412)
+	var pathToRegexp = __webpack_require__(413)
 	
 	function compileRoute (route, options) {
 	  var re
@@ -33102,7 +34641,7 @@
 
 
 /***/ },
-/* 348 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var URLON = {
@@ -33231,10 +34770,10 @@
 
 
 /***/ },
-/* 349 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isarray = __webpack_require__(350)
+	var isarray = __webpack_require__(414)
 	
 	/**
 	 * Expose `pathToRegexp`.
@@ -33663,12 +35202,685 @@
 
 
 /***/ },
-/* 350 */
+/* 414 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
 	  return Object.prototype.toString.call(arr) == '[object Array]';
 	};
+
+
+/***/ },
+/* 415 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/* global history */
+	
+	var URL = __webpack_require__(416)
+	var EventEmitter = __webpack_require__(207).EventEmitter
+	var instance = null
+	
+	// Check if IE history polyfill is added
+	var location = window.history.location || window.location
+	
+	module.exports = (function () {
+	  if (instance) {
+	    return instance
+	  }
+	
+	  var eventEmitter = new EventEmitter()
+	
+	  eventEmitter.addEventListener = eventEmitter.addListener
+	  eventEmitter.removeEventListener = eventEmitter.removeListener
+	
+	  var initialUrl = location.href
+	  var uri = URL(initialUrl)
+	  var origin = uri.protocol + '//' + uri.host
+	  var isPreventingDefault = false
+	  var doReplace = false
+	  var prevUrl = ''
+	  // var linkClicked = false
+	  var isEmitting = false
+	  var setSyncUrl = false
+	
+	  var emitChange = function (url, event) {
+	    eventEmitter.emit('change', {
+	      preventDefault: function () {
+	        event && event.preventDefault()
+	        isPreventingDefault = true
+	      },
+	      target: {
+	        value: url ? origin + url : location.href
+	      }
+	    })
+	  }
+	
+	  var onUrlChange = function (type) {
+	    return function (event) {
+	      if (location.href === prevUrl) {
+	        return
+	      }
+	
+	      // Fixes bug where trailing slash is converted to normal url
+	      if (location.href[location.href.length - 1] === '/') {
+	        doReplace = true
+	      }
+	
+	      isEmitting = true
+	      emitChange()
+	      isEmitting = false
+	
+	      if (!setSyncUrl && isPreventingDefault) {
+	        history.replaceState({}, '', (prevUrl || initialUrl).replace(origin, ''))
+	      }
+	
+	      prevUrl = location.href
+	      isPreventingDefault = false
+	      setSyncUrl = false
+	      doReplace = false
+	    }
+	  }
+	
+	  // this hack resolves issue with safari
+	  // see issue from Page JS for reference https://github.com/visionmedia/page.js/issues/213
+	  // see also https://github.com/visionmedia/page.js/pull/240
+	  if (document.readyState !== 'complete') {
+	    // load event has not fired
+	    global.addEventListener('load', function () {
+	      setTimeout(function () {
+	        global.addEventListener('popstate', onUrlChange('pop'), false)
+	      }, 0)
+	    }, false)
+	  } else {
+	    // load event has fired
+	    global.addEventListener('popstate', onUrlChange('pop'), false)
+	  }
+	
+	  Object.defineProperty(eventEmitter, 'value', {
+	    get: function () {
+	      return location.href
+	    },
+	    set: function (value) {
+	      if (typeof value !== 'string') {
+	        doReplace = Boolean(value.replace)
+	        value = value.value
+	      }
+	
+	      // If emitting a change we flag that we are setting
+	      // a url based on the event being emitted
+	      if (isEmitting) {
+	        setSyncUrl = true
+	      }
+	
+	      // Ensure full url
+	      if (value.indexOf(origin) === -1) {
+	        value = origin + value
+	      }
+	
+	      // If it is same url, forget about it
+	      if (value === location.href) {
+	        return
+	      }
+	
+	      // We might need to replace the url if we are fixing
+	      // for example trailing slash issue
+	      if (doReplace) {
+	        history.replaceState({}, '', value.replace(origin, ''))
+	        doReplace = false
+	      } else {
+	        history.pushState({}, '', value.replace(origin, ''))
+	      }
+	
+	      prevUrl = location.href
+	      isPreventingDefault = false
+	    }
+	  })
+	
+	  // expose URLUtils like API https://developer.mozilla.org/en-US/docs/Web/API/URLUtils
+	  // thanks https://github.com/cofounders/urlutils for reference
+	  Object.defineProperty(eventEmitter, 'origin', {
+	    get: function () {
+	      var uri = URL(location.href)
+	      return uri.protocol + '//' + uri.host
+	    }
+	  })
+	
+	  Object.defineProperty(eventEmitter, 'protocol', {
+	    get: function () {
+	      return URL(location.href).protocol
+	    }
+	  })
+	
+	  Object.defineProperty(eventEmitter, 'port', {
+	    get: function () {
+	      return URL(location.href).port
+	    }
+	  })
+	
+	  Object.defineProperty(eventEmitter, 'hostname', {
+	    get: function () {
+	      return URL(location.href).hostname
+	    }
+	  })
+	
+	  Object.defineProperty(eventEmitter, 'pathname', {
+	    get: function () {
+	      return URL(location.href).pathname
+	    }
+	  })
+	
+	  Object.defineProperty(eventEmitter, 'hash', {
+	    get: function () {
+	      return URL(location.href).hash
+	    }
+	  })
+	
+	  /*
+	    This code is from the Page JS source code. Amazing work on handling all
+	    kinds of scenarios with hyperlinks, thanks!
+	  */
+	
+	  var isSameOrigin = function (href) {
+	    return (href && (href.indexOf(origin) === 0))
+	  }
+	
+	  var getClickedHref = function (event) {
+	    // check which button
+	    if ((event.which === null ? event.button : event.which) !== 1) { return false }
+	
+	    // check for modifiers
+	    if (event.metaKey || event.ctrlKey || event.shiftKey) { return false }
+	    if (event.defaultPrevented) { return false }
+	
+	    // ensure link
+	    var element = event.target
+	    while (element && element.nodeName !== 'A') { element = element.parentNode }
+	    if (!element || element.nodeName !== 'A') { return false }
+	
+	    // Ignore if tag has
+	    // 1. "download" attribute
+	    // 2. rel="external" attribute
+	    if (element.hasAttribute('download') || element.getAttribute('rel') === 'external') { return false }
+	
+	    // Check for mailto: in the href
+	    var href = element.getAttribute('href')
+	    if (href && href.indexOf('mailto:') > -1) { return false }
+	
+	    // check target
+	    if (element.target) { return false }
+	
+	    // x-origin
+	    if (!isSameOrigin(element.href)) { return false }
+	
+	    return href
+	  }
+	
+	  global.addEventListener(document.ontouchstart ? 'touchstart' : 'click', function (event) {
+	    var href = getClickedHref(event)
+	    if (href) {
+	      // linkClicked = true
+	      isEmitting = true
+	      emitChange(href, event)
+	      isEmitting = false
+	      if (isPreventingDefault) {
+	        // linkClicked = false
+	      }
+	      prevUrl = href
+	      isPreventingDefault = false
+	    }
+	  })
+	
+	  instance = eventEmitter
+	
+	  return eventEmitter
+	}())
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 416 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var required = __webpack_require__(417)
+	  , lolcation = __webpack_require__(418)
+	  , qs = __webpack_require__(419)
+	  , relativere = /^\/(?!\/)/
+	  , protocolre = /^([a-z0-9.+-]+:)?(\/\/)?(.*)$/i; // actual protocol is first match
+	
+	/**
+	 * These are the parse instructions for the URL parsers, it informs the parser
+	 * about:
+	 *
+	 * 0. The char it Needs to parse, if it's a string it should be done using
+	 *    indexOf, RegExp using exec and NaN means set as current value.
+	 * 1. The property we should set when parsing this value.
+	 * 2. Indication if it's backwards or forward parsing, when set as number it's
+	 *    the value of extra chars that should be split off.
+	 * 3. Inherit from location if non existing in the parser.
+	 * 4. `toLowerCase` the resulting value.
+	 */
+	var instructions = [
+	  ['#', 'hash'],                        // Extract from the back.
+	  ['?', 'query'],                       // Extract from the back.
+	  ['/', 'pathname'],                    // Extract from the back.
+	  ['@', 'auth', 1],                     // Extract from the front.
+	  [NaN, 'host', undefined, 1, 1],       // Set left over value.
+	  [/\:(\d+)$/, 'port'],                 // RegExp the back.
+	  [NaN, 'hostname', undefined, 1, 1]    // Set left over.
+	];
+	
+	 /**
+	 * @typedef ProtocolExtract
+	 * @type Object
+	 * @property {String} protocol Protocol matched in the URL, in lowercase
+	 * @property {Boolean} slashes Indicates whether the protocol is followed by double slash ("//")
+	 * @property {String} rest     Rest of the URL that is not part of the protocol
+	 */
+	
+	 /**
+	  * Extract protocol information from a URL with/without double slash ("//")
+	  *
+	  * @param  {String} address   URL we want to extract from.
+	  * @return {ProtocolExtract}  Extracted information
+	  * @private
+	  */
+	function extractProtocol(address) {
+	  var match = protocolre.exec(address);
+	  return {
+	    protocol: match[1] ? match[1].toLowerCase() : '',
+	    slashes: !!match[2],
+	    rest: match[3] ? match[3] : ''
+	  };
+	}
+	
+	/**
+	 * The actual URL instance. Instead of returning an object we've opted-in to
+	 * create an actual constructor as it's much more memory efficient and
+	 * faster and it pleases my CDO.
+	 *
+	 * @constructor
+	 * @param {String} address URL we want to parse.
+	 * @param {Object|String} location Location defaults for relative paths.
+	 * @param {Boolean|Function} parser Parser for the query string.
+	 * @api public
+	 */
+	function URL(address, location, parser) {
+	  if (!(this instanceof URL)) {
+	    return new URL(address, location, parser);
+	  }
+	
+	  var relative = relativere.test(address)
+	    , parse, instruction, index, key
+	    , type = typeof location
+	    , url = this
+	    , i = 0;
+	
+	  //
+	  // The following if statements allows this module two have compatibility with
+	  // 2 different API:
+	  //
+	  // 1. Node.js's `url.parse` api which accepts a URL, boolean as arguments
+	  //    where the boolean indicates that the query string should also be parsed.
+	  //
+	  // 2. The `URL` interface of the browser which accepts a URL, object as
+	  //    arguments. The supplied object will be used as default values / fall-back
+	  //    for relative paths.
+	  //
+	  if ('object' !== type && 'string' !== type) {
+	    parser = location;
+	    location = null;
+	  }
+	
+	  if (parser && 'function' !== typeof parser) {
+	    parser = qs.parse;
+	  }
+	
+	  location = lolcation(location);
+	
+	  // extract protocol information before running the instructions
+	  var extracted = extractProtocol(address);
+	  url.protocol = extracted.protocol || location.protocol || '';
+	  url.slashes = extracted.slashes || location.slashes;
+	  address = extracted.rest;
+	
+	  for (; i < instructions.length; i++) {
+	    instruction = instructions[i];
+	    parse = instruction[0];
+	    key = instruction[1];
+	
+	    if (parse !== parse) {
+	      url[key] = address;
+	    } else if ('string' === typeof parse) {
+	      if (~(index = address.indexOf(parse))) {
+	        if ('number' === typeof instruction[2]) {
+	          url[key] = address.slice(0, index);
+	          address = address.slice(index + instruction[2]);
+	        } else {
+	          url[key] = address.slice(index);
+	          address = address.slice(0, index);
+	        }
+	      }
+	    } else if (index = parse.exec(address)) {
+	      url[key] = index[1];
+	      address = address.slice(0, address.length - index[0].length);
+	    }
+	
+	    url[key] = url[key] || (instruction[3] || ('port' === key && relative) ? location[key] || '' : '');
+	
+	    //
+	    // Hostname, host and protocol should be lowercased so they can be used to
+	    // create a proper `origin`.
+	    //
+	    if (instruction[4]) {
+	      url[key] = url[key].toLowerCase();
+	    }
+	  }
+	
+	  //
+	  // Also parse the supplied query string in to an object. If we're supplied
+	  // with a custom parser as function use that instead of the default build-in
+	  // parser.
+	  //
+	  if (parser) url.query = parser(url.query);
+	
+	  //
+	  // We should not add port numbers if they are already the default port number
+	  // for a given protocol. As the host also contains the port number we're going
+	  // override it with the hostname which contains no port number.
+	  //
+	  if (!required(url.port, url.protocol)) {
+	    url.host = url.hostname;
+	    url.port = '';
+	  }
+	
+	  //
+	  // Parse down the `auth` for the username and password.
+	  //
+	  url.username = url.password = '';
+	  if (url.auth) {
+	    instruction = url.auth.split(':');
+	    url.username = instruction[0] || '';
+	    url.password = instruction[1] || '';
+	  }
+	
+	  //
+	  // The href is just the compiled result.
+	  //
+	  url.href = url.toString();
+	}
+	
+	/**
+	 * This is convenience method for changing properties in the URL instance to
+	 * insure that they all propagate correctly.
+	 *
+	 * @param {String} prop          Property we need to adjust.
+	 * @param {Mixed} value          The newly assigned value.
+	 * @param {Boolean|Function} fn  When setting the query, it will be the function used to parse
+	 *                               the query.
+	 *                               When setting the protocol, double slash will be removed from
+	 *                               the final url if it is true.
+	 * @returns {URL}
+	 * @api public
+	 */
+	URL.prototype.set = function set(part, value, fn) {
+	  var url = this;
+	
+	  if ('query' === part) {
+	    if ('string' === typeof value && value.length) {
+	      value = (fn || qs.parse)(value);
+	    }
+	
+	    url[part] = value;
+	  } else if ('port' === part) {
+	    url[part] = value;
+	
+	    if (!required(value, url.protocol)) {
+	      url.host = url.hostname;
+	      url[part] = '';
+	    } else if (value) {
+	      url.host = url.hostname +':'+ value;
+	    }
+	  } else if ('hostname' === part) {
+	    url[part] = value;
+	
+	    if (url.port) value += ':'+ url.port;
+	    url.host = value;
+	  } else if ('host' === part) {
+	    url[part] = value;
+	
+	    if (/\:\d+/.test(value)) {
+	      value = value.split(':');
+	      url.hostname = value[0];
+	      url.port = value[1];
+	    }
+	  } else if ('protocol' === part) {
+	    url.protocol = value;
+	    url.slashes = !fn;
+	  } else {
+	    url[part] = value;
+	  }
+	
+	  url.href = url.toString();
+	  return url;
+	};
+	
+	/**
+	 * Transform the properties back in to a valid and full URL string.
+	 *
+	 * @param {Function} stringify Optional query stringify function.
+	 * @returns {String}
+	 * @api public
+	 */
+	URL.prototype.toString = function toString(stringify) {
+	  if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
+	
+	  var query
+	    , url = this
+	    , protocol = url.protocol;
+	
+	  if (protocol && protocol.charAt(protocol.length - 1) !== ':') protocol += ':';
+	
+	  var result = protocol + (url.slashes ? '//' : '');
+	
+	  if (url.username) {
+	    result += url.username;
+	    if (url.password) result += ':'+ url.password;
+	    result += '@';
+	  }
+	
+	  result += url.hostname;
+	  if (url.port) result += ':'+ url.port;
+	
+	  result += url.pathname;
+	
+	  query = 'object' === typeof url.query ? stringify(url.query) : url.query;
+	  if (query) result += '?' !== query.charAt(0) ? '?'+ query : query;
+	
+	  if (url.hash) result += url.hash;
+	
+	  return result;
+	};
+	
+	//
+	// Expose the URL parser and some additional properties that might be useful for
+	// others.
+	//
+	URL.qs = qs;
+	URL.location = lolcation;
+	module.exports = URL;
+
+
+/***/ },
+/* 417 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Check if we're required to add a port number.
+	 *
+	 * @see https://url.spec.whatwg.org/#default-port
+	 * @param {Number|String} port Port number we need to check
+	 * @param {String} protocol Protocol we need to check against.
+	 * @returns {Boolean} Is it a default port for the given protocol
+	 * @api private
+	 */
+	module.exports = function required(port, protocol) {
+	  protocol = protocol.split(':')[0];
+	  port = +port;
+	
+	  if (!port) return false;
+	
+	  switch (protocol) {
+	    case 'http':
+	    case 'ws':
+	    return port !== 80;
+	
+	    case 'https':
+	    case 'wss':
+	    return port !== 443;
+	
+	    case 'ftp':
+	    return port !== 21;
+	
+	    case 'gopher':
+	    return port !== 70;
+	
+	    case 'file':
+	    return false;
+	  }
+	
+	  return port !== 0;
+	};
+
+
+/***/ },
+/* 418 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	
+	var slashes = /^[A-Za-z][A-Za-z0-9+-.]*:\/\//;
+	
+	/**
+	 * These properties should not be copied or inherited from. This is only needed
+	 * for all non blob URL's as a blob URL does not include a hash, only the
+	 * origin.
+	 *
+	 * @type {Object}
+	 * @private
+	 */
+	var ignore = { hash: 1, query: 1 }
+	  , URL;
+	
+	/**
+	 * The location object differs when your code is loaded through a normal page,
+	 * Worker or through a worker using a blob. And with the blobble begins the
+	 * trouble as the location object will contain the URL of the blob, not the
+	 * location of the page where our code is loaded in. The actual origin is
+	 * encoded in the `pathname` so we can thankfully generate a good "default"
+	 * location from it so we can generate proper relative URL's again.
+	 *
+	 * @param {Object|String} loc Optional default location object.
+	 * @returns {Object} lolcation object.
+	 * @api public
+	 */
+	module.exports = function lolcation(loc) {
+	  loc = loc || global.location || {};
+	  URL = URL || __webpack_require__(416);
+	
+	  var finaldestination = {}
+	    , type = typeof loc
+	    , key;
+	
+	  if ('blob:' === loc.protocol) {
+	    finaldestination = new URL(unescape(loc.pathname), {});
+	  } else if ('string' === type) {
+	    finaldestination = new URL(loc, {});
+	    for (key in ignore) delete finaldestination[key];
+	  } else if ('object' === type) {
+	    for (key in loc) {
+	      if (key in ignore) continue;
+	      finaldestination[key] = loc[key];
+	    }
+	
+	    if (finaldestination.slashes === undefined) {
+	      finaldestination.slashes = slashes.test(loc.href);
+	    }
+	  }
+	
+	  return finaldestination;
+	};
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 419 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var has = Object.prototype.hasOwnProperty;
+	
+	/**
+	 * Simple query string parser.
+	 *
+	 * @param {String} query The query string that needs to be parsed.
+	 * @returns {Object}
+	 * @api public
+	 */
+	function querystring(query) {
+	  var parser = /([^=?&]+)=([^&]*)/g
+	    , result = {}
+	    , part;
+	
+	  //
+	  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
+	  // the lastIndex property so we can continue executing this loop until we've
+	  // parsed all results.
+	  //
+	  for (;
+	    part = parser.exec(query);
+	    result[decodeURIComponent(part[1])] = decodeURIComponent(part[2])
+	  );
+	
+	  return result;
+	}
+	
+	/**
+	 * Transform a query string to an object.
+	 *
+	 * @param {Object} obj Object that should be transformed.
+	 * @param {String} prefix Optional prefix.
+	 * @returns {String}
+	 * @api public
+	 */
+	function querystringify(obj, prefix) {
+	  prefix = prefix || '';
+	
+	  var pairs = [];
+	
+	  //
+	  // Optionally prefix with a '?' if needed
+	  //
+	  if ('string' !== typeof prefix) prefix = '?';
+	
+	  for (var key in obj) {
+	    if (has.call(obj, key)) {
+	      pairs.push(encodeURIComponent(key) +'='+ encodeURIComponent(obj[key]));
+	    }
+	  }
+	
+	  return pairs.length ? prefix + pairs.join('&') : '';
+	}
+	
+	//
+	// Expose the module.
+	//
+	exports.stringify = querystringify;
+	exports.parse = querystring;
 
 
 /***/ }
